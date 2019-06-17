@@ -155,7 +155,7 @@ def readbData(fileName):
 def main():
         start = time.time()
         N = int(sys.argv[1])	
-        z = lasso(N, max_iter = 500, lmbd = 1e-3, rho = 1, abstol = 1e-4, reltol = 1e-2)
+        z = admm_lasso(N, max_iter = 500, lmbd = 1e-3, rho = 1, abstol = 1e-4, reltol = 1e-2)
 
         print("\nTotal elapsed time: %s" % str((time.time() - start)/100))
         np.savetxt("Solution.COMPSs.txt", z)    
