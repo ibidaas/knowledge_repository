@@ -156,28 +156,14 @@ Now we can execute the app **(using --s='\<ip-swarm-manager>:2376')**:
 $ scripts/user/runcompss-docker --w=1 --s='192.168.99.100:2376' --i='bscdatadriven/hecuba-compss-quickstart:latest' --stack=teststack --context-dir='/root/code' --classpath=/root/conf/*.jar  --storage_conf=/root/conf/multinode.txt /root/code/WordCountExample.py
 ```
 ## Execute your own app
-To execute an application that you yourself have implemented, first you have to copy the code to the image. There are several ways to do this, for example running a container in interactive mode, copying the code and then saving the image.
-Run the container in interactive mode:
+To execute an application that you yourself have implemented, first you have to copy the code to the image. There are several ways to do this, for example using a Dockerfile.
+There is already a Dockerfile in the quick-start, so you only have to copy your code files into the quick-start folder and run **(inside quick-start directory)**:
 ```bash
-$ docker run -it bscdatadriven/hecuba-compss-quickstart:latest bash
+docker build . -t new-image-name
 ```
-Then, in another terminal, first copy the container id of the running container:
-```
-$ docker ps
-CONTAINER ID        IMAGE                                           COMMAND                  CREATED             STATUS              PORTS                                         NAMES
-695459a6e169        bscdatadriven/hecuba-compss-quickstart:latest   "bash"                   4 seconds ago       Up 4 seconds        22/tcp, 80/tcp                                vibrant_greider
-cf23231bc034        cassandra                                       "docker-entrypoint.s…"   5 hours ago         Up 5 hours          7000-7001/tcp, 7199/tcp, 9042/tcp, 9160/tcp   my-cass
-```
-Now we have to copy the files to the container **using the container id**:
+This will create another image with the name "new-image-name".
+To finish, we can execute the app as follows **(using --i=new-image-name')**:
 ```bash
-$ docker cp myfile.py 695459a6e169:/path/to/code/
+$ scripts/user/runcompss-docker --w=1 --s='192.168.99.100:2376' --i='new-image-name' --stack=teststack --context-dir='/code/' --classpath=/root/conf/*.jar  --storage_conf=/root/conf/multinode.txt /code/myfile.py
 ```
-Then we save the image in a new dockerhub repository:
-```bash
-$ docker commit 695459a6e169 mydockerhubuser/my-image:1.0
-$ docker push mydockerhubuser/my-image:1.0
-```
-To finish, we can execute the app as follows **(using --s='\<ip-swarm-manager>:2376')**:
-```bash
-$ scripts/user/runcompss-docker --w=1 --s='192.168.99.100:2376' --i='mydockerhubuser/my-image:1.0' --stack=teststack --context-dir='/path/to/code/' --classpath=/root/conf/*.jar  --storage_conf=/root/conf/multinode.txt /path/to/code/myfile.py
-```
+Be free to modify this Dockerfile to create your own image from the provided.
