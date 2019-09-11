@@ -1,5 +1,5 @@
 """
-ADMM Lasso
+ADMM Logistic Regression
 
 @Authors: Aleksandar Armacki and Lidija Fodor
 @Affiliation: Faculty of Sciences, University of Novi Sad, Serbia
@@ -12,6 +12,7 @@ import cvxpy as cp
 import functools
 import time
 import sys
+import random
 from pycompss.api.task import task
 from pycompss.api.api import compss_wait_on
 from pycompss.api.parameter import *
@@ -93,9 +94,9 @@ class ADMM:
         return u + x - z
 
 
-class Lasso:
-    """Lasso represents the Least Absolute Shrinkage and Selection Operator (Lasso) for
-    regression analysis, solved in a distributed manner. 
+class LogisticRegression:
+    """Logistic Regression represents the L1 regularized binary classification algorithm,
+    solved in a distributed manner.
 
     :param n: The number of agents used to solve the problem
     :param max_iter: The maximum number of iterations before the algorithm stops automatically
@@ -147,15 +148,22 @@ class Lasso:
         self.z = z
         return z
         
-    def predict(self, x):
-        return np.dot(x, self.z)
-        
+    def predict(self, data):
+        labels = np.dot(data, self.z)
+        labels = np.sign(labels)
+
+        for i in range(len(labels)):
+            if labels[i] == 0:
+                labels[i] == random.choice([-1,1])
+
+        return labels
+
     def fit_predict(self, x):
         self.fit()
         return self.predict(x)
 
     def loss_fn(self, a, b, x):
-        return 1 / 2 * cp.norm(cp.matmul(a, x) - b, p=2) ** 2
+        return cp.logistic(b*(cp.matmul(a, x)))
 
     def regularizer_x(self, x, z, u):
         return cp.norm(x - z + u, p=2) ** 2
@@ -198,15 +206,15 @@ def main():
     n = int(sys.argv[1])
 
     optimizer = ADMM(rho=1, abstol=1e-4, reltol=1e-2)
-    lasso = Lasso(n=n, max_iter=500, lmbd=1e-3, optimizer=optimizer)
-    optimizer.objective_fn = lasso.objective_x
+    logreg = LogisticRegression(n=n, max_iter=500, lmbd=1e-3, optimizer=optimizer)
+    optimizer.objective_fn = logreg.objective_x
 
-    z = lasso.fit()
+    z = logreg.fit()
 
     print("\nTotal elapsed time: %s" % str((time.time() - start) / 100))
     np.savetxt("Solution.COMPSs.txt", z)
     
-    print(lasso.predict(np.random.rand(50, 50)))
+    print(logreg.predict(np.random.rand(50, 50)))
 
 if __name__ == '__main__':
     main()

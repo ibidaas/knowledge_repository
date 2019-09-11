@@ -1,5 +1,5 @@
 """
-ADMM Lasso
+ADMM Ridge
 
 @Authors: Aleksandar Armacki and Lidija Fodor
 @Affiliation: Faculty of Sciences, University of Novi Sad, Serbia
@@ -30,12 +30,13 @@ class ADMM:
     :param objective_fn: objective function
     """
 
-    def __init__(self, rho=1, abstol=1e-4, reltol=1e-2, warm_start=False, objective_fn=None):
+    def __init__(self, rho=1, abstol=1e-4, reltol=1e-2, warm_start=False, objective_fn=None, objective_z=None):
         self.rho = rho
         self.abstol = abstol
         self.reltol = reltol
         self.warm_start = warm_start
         self.objective_fn = objective_fn
+        self.objective_z = objective_z
 
     @task(returns=np.array)
     def x_update(self, z, rho, a, b, u):
@@ -45,26 +46,21 @@ class ADMM:
         problem.solve(warm_start=self.warm_start)
         return sol.value
 
-    def soft_thr(self, v, k):
-        z = np.zeros(v.shape)
-        for i in range(z.shape[0]):
-            if np.abs(v[i]) <= k:
-                z[i] = 0
-            else:
-                if v[i] > k:
-                    z[i] = v[i] - k
-                else:
-                    z[i] = v[i] + k
-        return z
+    def z_update(self, x, u, rho):
+        n = x.shape[0]
+        sol = cp.Variable(n)
+        problem = cp.Problem(cp.Minimize(self.objective_z(sol, x, u, rho)))
+        problem.solve(warm_start=self.warm_start)
+        return sol.value
 
-    def step(self, z, data_chunk, target_chunk, u, frac, z_old, i, n, N):
+    def step(self, z, data_chunk, target_chunk, u, z_old, i, n, N):
         # update x
         x = list(
             map(functools.partial(self.x_update, z, self.rho), data_chunk, target_chunk, u))
         x = compss_wait_on(x)
 
         # update z
-        z = self.soft_thr(np.mean(x, axis=0) + np.mean(u, axis=0), frac)
+        z = self.z_update(np.mean(x, axis=0), np.mean(u, axis=0), self.rho)
 
         # update u
         u = list(map(functools.partial(self.u_update, z), x, u))
@@ -93,13 +89,13 @@ class ADMM:
         return u + x - z
 
 
-class Lasso:
-    """Lasso represents the Least Absolute Shrinkage and Selection Operator (Lasso) for
-    regression analysis, solved in a distributed manner. 
+class Ridge:
+    """Ridge (or Tikhonov) regression represents the L2 regualarized linear model for
+    regression analysis, solved in a distributed manner.
 
     :param n: The number of agents used to solve the problem
     :param max_iter: The maximum number of iterations before the algorithm stops automatically
-    :param lmbd: The regularization parameter for Lasso regression
+    :param lmbd: The regularization parameter for Ridge regression
 
     """
 
@@ -133,11 +129,10 @@ class Lasso:
         u = [np.zeros(n) for _ in range(self.N)]
 
         req_iter = self.max_iter
-        frac = self.lmbd / self.optimizer.rho / self.N
 
         for i in range(self.max_iter):
             x, z, u, should_stop = \
-                self.optimizer.step(z, data_chunk, target_chunk, u, frac, z_old, i, n, self.N)
+                self.optimizer.step(z, data_chunk, target_chunk, u, z_old, i, n, self.N)
 
             if should_stop:
                 break
@@ -154,6 +149,7 @@ class Lasso:
         self.fit()
         return self.predict(x)
 
+
     def loss_fn(self, a, b, x):
         return 1 / 2 * cp.norm(cp.matmul(a, x) - b, p=2) ** 2
 
@@ -162,6 +158,9 @@ class Lasso:
 
     def objective_x(self, a, b, x, z, u, rho):
         return self.loss_fn(a, b, x) + rho / 2 * self.regularizer_x(x, z, u)
+
+    def objective_z(self,z, x, u, rho):
+        return self.lmbd * cp.norm(z, p=2)**2 + 0.5*self.N*rho*cp.norm(x - z + u, p=2)**2
 
     @task(fileName=FILE_IN, returns=np.array)
     def read_a_data(self, file_name):
@@ -198,15 +197,16 @@ def main():
     n = int(sys.argv[1])
 
     optimizer = ADMM(rho=1, abstol=1e-4, reltol=1e-2)
-    lasso = Lasso(n=n, max_iter=500, lmbd=1e-3, optimizer=optimizer)
-    optimizer.objective_fn = lasso.objective_x
+    ridge = Ridge(n=n, max_iter=500, lmbd=1e-3, optimizer=optimizer)
+    optimizer.objective_fn = ridge.objective_x
+    optimizer.objective_z = ridge.objective_z
 
-    z = lasso.fit()
+    z = ridge.fit()
 
     print("\nTotal elapsed time: %s" % str((time.time() - start) / 100))
     np.savetxt("Solution.COMPSs.txt", z)
     
-    print(lasso.predict(np.random.rand(50, 50)))
+    print(ridge.predict(np.random.rand(50, 50)))
 
 if __name__ == '__main__':
     main()
