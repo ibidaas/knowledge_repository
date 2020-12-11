@@ -1,0 +1,15 @@
+manager ansible_ssh_host=192.168.15.100
+worker1 ansible_ssh_host=192.168.15.101
+worker2 ansible_ssh_host=192.168.15.102
+
+[docker-swarm-manager]
+manager
+
+[docker-swarm-node]
+worker1
+worker2
+
+[docker-swarm:children]
+docker-swarm-manager
+docker-swarm-node
+

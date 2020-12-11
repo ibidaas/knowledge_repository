@@ -1,0 +1,49 @@
+
+- name: install and run software to manager
+  hosts: manager
+  vars:
+    http_port: 80
+    domain: manager
+  tasks:
+#  - git:
+#      repo: 'https://@github.com/...'
+#      dest: /var/www/orchestrator
+#      accept_hostkey: yes
+    - name: Ensure example database exists.
+      mysql_db: name=orchestrator state=present
+      notify: import orchestrator database
+    - name: Create user orchestrator 
+      mysql_user:
+        name: orchestrator
+        password: orchestrator
+        priv: 'orchestrator.*:ALL,GRANT'
+        state: present
+    - name: create virtual host file
+      template: src=virtualhost.j2 dest=/etc/httpd/conf.d/{{ domain }}.conf
+      notify:
+        - restart apache
+    - name: create .env
+      template: src=env.conf dest=/var/www/orchestrator/.env
+    - name: get composer installer
+      command: 
+        cmd: curl https://getcomposer.org/installer -o /tmp/composer-installer
+        creates: /tmp/composer-installer    
+    - name: install composer
+      command: 
+        cmd: /usr/bin/php72 /tmp/composer-installer
+        chdir: /tmp
+        creates: /tmp/composer.phar
+    - name: run composer
+      command: 
+        cmd: /usr/bin/php72 /tmp/composer.phar install
+        chdir: /var/www/orchestrator
+    - name: fix storage permissions
+      command: 
+        cmd: chown -R apache /var/www/orchestrator/storage  
+
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+    - name: import orchestrator database
+      mysql_db: name=orchestrator state=import target=/var/www/orchestrator/orchestrator.sql
+  

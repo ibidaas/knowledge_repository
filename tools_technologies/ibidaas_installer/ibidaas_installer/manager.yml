@@ -1,0 +1,62 @@
+
+- name: Install epel & remi 
+  hosts: manager
+  tasks:  
+      - name: Install EPEL repo.
+        yum:
+          name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
+          state: present
+    
+      - name: Import EPEL GPG key.
+        rpm_key:
+          key: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+          state: present
+    
+      - name: Install remi repo.
+        yum:
+          name: http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm
+          state: present
+    
+      - name: Import remi GPG key.
+        rpm_key:
+          key: http://rpms.remirepo.net/RPM-GPG-KEY-remi
+          state: present
+
+- name: install and run software to manager
+  hosts: manager
+  gather_facts: false
+  tasks:
+  - name: Install yum-ext packages
+    yum: pkg={{item}} state=installed enablerepo="remi-php72"
+    with_items : 
+      - httpd
+      - php-common
+      - php-mysql 
+      - php-xml 
+      - php-soap 
+      - php-xmlrpc 
+      - php-mbstring 
+      - php-json
+      - php-mcrypt
+      - php-mbstring
+      - php-xml
+      - php-mysqlnd
+      - mariadb
+      - mariadb-server
+      - git
+      - MySQL-python
+
+  - name: be sure httpd is enabled
+    systemd: name=httpd enabled=yes
+    
+  - name: be sure httpd is running
+    systemd: name=httpd state=started
+
+  - name: be sure mariadb is enabled
+    systemd: name=mariadb enabled=yes
+    
+  - name: be sure mariadb is running
+    systemd: name=mariadb state=started
+
+
+  

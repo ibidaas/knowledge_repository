@@ -1,0 +1,19 @@
+<VirtualHost *:{{ http_port }}>
+        ServerName {{ domain }}
+        ServerAlias localhost
+        ServerAdmin webmaster@{{ domain }}
+        ErrorLog /var/log/httpd/{{ domain }}-error.log
+        CustomLog /var/log/httpd/{{ domain }}-access.log combined
+
+        DocumentRoot /var/www/orchestrator/public
+
+        <Directory /var/www/orchestrator/public>
+              AllowOverride All
+        </Directory>
+
+        Alias "/root/general/users" "/var/nfs/general/users"
+        <Directory /var/nfs/general/users>
+          Require all granted
+        </Directory>
+
+</VirtualHost>

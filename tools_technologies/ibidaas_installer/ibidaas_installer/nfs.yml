@@ -1,0 +1,47 @@
+- hosts: manager
+  name: install and run nfs software to manager
+  vars:
+    mynetwork: 192.168.15.0/24
+  tasks:
+    
+    - name: Ensure NFS utilities are installed.
+      yum: name={{ item }} state=installed update_cache=yes
+      with_items:
+        - nfs-utils
+
+    - name: Create mountable dir
+      file: path=/var/nfs/general state=directory mode=777 owner=nfsnobody group=nfsnobody
+      
+    - name: copy /etc/exports
+      template: src=exports.j2 dest=/etc/exports owner=root group=root
+
+    - name: be sure rpcbind is enabled
+      systemd: name=rpcbind enabled=yes
+    - name: be sure rpcbind is running
+      systemd: name=rpcbind state=started
+
+    - name: be sure nfs-server is enabled
+      systemd: name=nfs-server enabled=yes
+    - name: be sure nfs-server is running
+      systemd: name=nfs-server state=started
+
+- hosts: docker-swarm-node
+  name: install and run software to workers
+  tasks:
+    
+    - name: Ensure NFS utilities are installed.
+      yum: name={{ item }} state=installed update_cache=yes
+      with_items:
+        - nfs-utils
+
+    - name: Create mountable dir
+      file: path=/var/nfs/general state=directory mode=777 owner=nfsnobody group=nfsnobody
+    
+    - name: get composer installer
+      command: 
+        cmd: mount -t nfs {{ hostvars[groups['docker-swarm-manager'][0]]['ansible_ssh_host'] }}:/var/nfs/general /var/nfs/general
+       
+    - name: set mountpoints
+      mount: name=/var/nfs/general src={{ hostvars[groups['docker-swarm-manager'][0]]['ansible_ssh_host'] }}:/var/nfs/general fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted
+
+        
