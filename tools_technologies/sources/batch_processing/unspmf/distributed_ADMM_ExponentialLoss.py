@@ -195,8 +195,7 @@ class ExponentialLoss(object):
 
     @task(fileName=FILE_IN, returns=np.array, target_direction=IN)
     def read_a_data(self, file_name):
-        # read matrix A, fileName="A"+str(i+1)+".dat"
-        f = open("/home/lidija/ADMMLogReg/"+file_name, 'r')
+        f = open(file_name, 'r')
         #f = open(file_name, 'r')
         line1 = f.readline()
         dims = list(map(int, line1.split()))
@@ -211,8 +210,7 @@ class ExponentialLoss(object):
 
     @task(fileName=FILE_IN, returns=np.array, target_direction=IN)
     def read_b_data(self, file_name):
-        # read vector b, fileName="b"+str(i+1)+".dat"
-        f = open("/home/lidija/ADMMLogReg/"+file_name, 'r')
+        f = open(file_name, 'r')
         #f = open(file_name, 'r')
         line1 = f.readline()
         dims = list(map(int, line1.split()))
