@@ -18,7 +18,7 @@ from pycompss.api.api import compss_wait_on
 from pycompss.api.parameter import *
 
 
-class ADMM:
+class ADMM(object):
     """
     Alternating Direction Method of Multipliers (ADMM) solver. ADMM is renowned for being well suited
     to the distributed settings, for its guaranteed convergence and general robustness with respect
@@ -38,7 +38,7 @@ class ADMM:
         self.warm_start = warm_start
         self.objective_fn = objective_fn
 
-    @task(returns=np.array)
+    @task(returns=np.array, target_direction=IN)
     def x_update(self, z, rho, a, b, u):
         n = a.shape[1]
         sol = cp.Variable(n)
@@ -84,17 +84,19 @@ class ADMM:
 
         if prires <= eps_pri and dualres <= eps_dual:
             req_iter = i
+            print("Required number of iterations ")
+            print(req_iter)
             return x, z, u, True
 
         return x, z, u, False
 
 
-    @task(returns=np.array)
+    @task(returns=np.array, target_direction=IN)
     def u_update(self, z, u, x):
         return u + x - z
 
 
-class LogisticRegression:
+class LogisticRegression(object):
     """Logistic Regression represents the L1 regularized binary classification algorithm,
     solved in a distributed manner.
 
@@ -112,10 +114,11 @@ class LogisticRegression:
 
     def fit(self):
 
+        aTime = time.time()
         # file names
         rng = np.asarray(range(self.N))
-        str_a = ["A" + str(i + 1) + ".dat" for i in rng]
-        str_b = ["b" + str(i + 1) + ".dat" for i in rng]
+        str_a = ["Sample" + str(i + 1) + ".dat" for i in rng]
+        str_b = ["Label" + str(i + 1) + ".dat" for i in rng]
 
         # reading the data
         data_chunk = list(map(self.read_a_data, str_a))
@@ -123,9 +126,26 @@ class LogisticRegression:
         target_chunk = list(map(self.read_b_data, str_b))
         target_chunk = compss_wait_on(target_chunk)
 
+        bTime = time.time()
+      
+        print("The data was read")
+        print("\ntime for reading the data is: %s" % str((bTime-aTime) / 100))
+
+
         # get the dimensions
         (part, n) = data_chunk[0].shape
         m = part * self.N
+
+        print("The dimensions of each sample part are ")
+        print(part)
+        print(n)
+
+        print("The overall dimension of sample is ")
+        print(m)
+
+        a =target_chunk[0].shape
+        print("The dimension of labels is")
+        print(a)
 
         # initialization
         x = [np.zeros(n) for i in range(self.N)]
@@ -137,9 +157,12 @@ class LogisticRegression:
         frac = self.lmbd / self.optimizer.rho / self.N
 
         for i in range(self.max_iter):
+            print(i)
+            #cTime = time.time()
             x, z, u, should_stop = \
                 self.optimizer.step(z, data_chunk, target_chunk, u, frac, z_old, i, n, self.N)
-
+            #dTime = time.time()
+            #print("\ntime for one step is: %s" % str((dTime-cTime) / 100))
             if should_stop:
                 break
 
@@ -163,7 +186,8 @@ class LogisticRegression:
         return self.predict(x)
 
     def loss_fn(self, a, b, x):
-        return cp.logistic(b*(cp.matmul(a, x)))
+        return cp.sum(cp.logistic(-b*(a @ x)))
+        #return cp.logistic(b*(cp.matmul(a, x)))
 
     def regularizer_x(self, x, z, u):
         return cp.norm(x - z + u, p=2) ** 2
@@ -171,7 +195,7 @@ class LogisticRegression:
     def objective_x(self, a, b, x, z, u, rho):
         return self.loss_fn(a, b, x) + rho / 2 * self.regularizer_x(x, z, u)
 
-    @task(fileName=FILE_IN, returns=np.array)
+    @task(fileName=FILE_IN, returns=np.array, target_direction=IN)
     def read_a_data(self, file_name):
         # read matrix A, fileName="A"+str(i+1)+".dat"
         f = open(file_name, 'r')
@@ -184,9 +208,9 @@ class LogisticRegression:
         vecl = list(map(float, rest.split()))
         vec = np.asarray(vecl)
 
-        return vec.reshape(n, m).T
+        return vec.reshape(m, n)
 
-    @task(fileName=FILE_IN, returns=np.array)
+    @task(fileName=FILE_IN, returns=np.array, target_direction=IN)
     def read_b_data(self, file_name):
         # read vector b, fileName="b"+str(i+1)+".dat"
         f = open(file_name, 'r')
@@ -199,22 +223,3 @@ class LogisticRegression:
         vecl = list(map(float, rest.split()))
         vec = np.asarray(vecl)
         return vec
-
-
-def main():
-    start = time.time()
-    n = int(sys.argv[1])
-
-    optimizer = ADMM(rho=1, abstol=1e-4, reltol=1e-2)
-    logreg = LogisticRegression(n=n, max_iter=500, lmbd=1e-3, optimizer=optimizer)
-    optimizer.objective_fn = logreg.objective_x
-
-    z = logreg.fit()
-
-    print("\nTotal elapsed time: %s" % str((time.time() - start) / 100))
-    np.savetxt("Solution.COMPSs.txt", z)
-    
-    print(logreg.predict(np.random.rand(50, 50)))
-
-if __name__ == '__main__':
-    main()
