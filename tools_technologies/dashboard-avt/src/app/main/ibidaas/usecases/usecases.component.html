@@ -1,0 +1,51 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+
+  <div fxLayout="column" fxLayoutAlign="start" fxFlex="1 1 auto">
+
+    <mat-toolbar>
+      <!-- <span>{{'IBiDaaS Use Cases Projects' | translate}}</span> -->
+      <span>{{'I-BiDaaS Use Cases' | translate}}</span>
+    </mat-toolbar>
+
+    <mat-divider style="margin-bottom:15px;"></mat-divider>
+
+    <div fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="25px">
+
+      <div class="dashboard-section" *ngFor="let project of iBiDaaSUseCases">
+        <div *ngIf='project.id !=4'>
+          <mat-card class="example-card" routerLink="{{project.routerLink}}">
+            <mat-card-header class="ibidaas-use-case-card-header">
+              <mat-card-title>{{project.friendly_name}}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="{{project.img}}" alt="{{project.alt}}">
+            <mat-card-content class="ibidaas-use-case-card-content">
+              <p>
+                {{project.description}}
+              </p>
+            </mat-card-content>
+            <mat-card-actions routerLink="{{project.routerLink}}">
+              <mat-divider></mat-divider>
+              <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="center"
+                style="padding-top: 10px; font-size: 12px">
+                <div>Created: {{project.updated_at}}</div>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <!-- <mat-card class="example-card" routerLink = "/telefonica/livestats">
+      <mat-card-header>
+        <mat-card-title>Telefonica Live Stats</mat-card-title>
+      </mat-card-header>
+      <img mat-card-image src="/assets/telefonica/telefonica_spain_green.jpg" alt="Photo of a telefonica in Spain">
+      <mat-card-content>
+        <p>
+          The Telefonica Call Centre Use Case demonstrates the I-BiDaaS real-time analysis capabilities; calls to all of Telefonica's call centres in Spain are analysed in real time in an effort to determine the caller's sentiment statistics are visualised in real-time as calls are completed.
+        </p>
+      </mat-card-content>  
+    </mat-card> -->
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div  >
+  <h2 mat-dialog-title> Decision Tree </h2> 
+  <mat-dialog-content> <b>Description:</b> 
+      <p>
+        A decision tree is a supervised machine learning algorithm that can be used for both classification and regression problems. 
+        The goal of using a Decision Tree is to create a training model that can use to predict the class or value of the target variable by 
+        learning simple decision rules inferred from prior data (training data).
+      </p>
+      <b>Parameters:</b>
+      <ul>
+        <li>Attribute of selection measure (e.g gini, entropy) </li>
+        <li>Maximum depth of a tree</li>
+      </ul>
+      
+      <b>When to use: </b>
+      <ul>
+        <li>If you have labeled data</li>
+        <li>If the output of the model is a class (classification)</li>
+        <li>If the output of the model is a number (regression)  </li>
+      </ul>
+      
+  </mat-dialog-content>
+  <div mat-dialog-actions align="end">
+      <button class="mat-raised-button" (click)="close()">Close</button>
+    </div>
+</div>

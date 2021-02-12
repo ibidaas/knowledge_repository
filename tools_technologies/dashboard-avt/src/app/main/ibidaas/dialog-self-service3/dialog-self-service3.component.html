@@ -1,0 +1,26 @@
+<div>
+  <h2 mat-dialog-title> K-means Evaluation </h2>
+  <mat-dialog-content> <b>Description:</b>
+    <p>
+      K-means algorithm is a supervised learning algorithm which is used for both classification as well as
+      regression.
+      In evaluation, clustering results are evaluated based on data that was clustered itself and on data not used for
+      clustering, such as known
+      class labels and external benchmarks.
+      These types of evaluation methods measure how close the clustering is to the predetermined benchmark classes.
+    </p>
+    <b>Parameters:</b>
+    <ul>
+      <li>Number of clusters: k</li>
+    </ul>
+    <b>When to use: </b>
+    <ul>
+      <li>If you have labeled data</li>
+      <li>If the output of the model is a class (classification)</li>
+      <li>If the output of the model is a number (regression)</li>
+    </ul>
+  </mat-dialog-content>
+  <div mat-dialog-actions align="end">
+    <button class="mat-raised-button" (click)="close()">Close</button>
+  </div>
+</div>

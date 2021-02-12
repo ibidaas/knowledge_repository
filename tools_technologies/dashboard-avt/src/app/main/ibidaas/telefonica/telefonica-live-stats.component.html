@@ -1,0 +1,340 @@
+<div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="25px">
+
+        <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+
+
+            <mat-card style="width:50%; padding: 0px;">
+
+                <div class="p-16" fxLayout="column">
+                    <div class="p-16 accent">
+                        <div class="h3">Telefonica Call Centers - Spain Map</div>
+                    </div>
+                    <div id="telefonika-spain-map" fxFlex="50" style="width: 100%"
+                        [@animate]="{value:'*',params:{scale:'0.2'}}">
+
+                        <div
+                            style="position: relative;width: fit-content;display: block;margin: 0 auto;margin-top: 10px;">
+                            <img src={{image}} style="max-height: 540px;" />
+
+                            <div id="call-center-one">
+                                <img src="/assets/telefonica/marker.png">
+
+                                <div class="chart">
+                                    <app-nvd3 [options]="nvd3CallCenterOneOptions" [data]="nvd3CallCenterOneData"
+                                        config="{refreshDataOnly: true, deepWatchData: true}">
+                                    </app-nvd3>
+                                </div>
+                            </div>
+                            <div id="call-center-two">
+                                <img src="/assets/telefonica/marker.png">
+
+                                <div class="chart">
+                                    <app-nvd3 [options]="nvd3CallCenterTwoOptions" [data]="nvd3CallCenterTwoData"
+                                        config="{refreshDataOnly: true, deepWatchData: true}">
+                                    </app-nvd3>
+                                </div>
+                            </div>
+                            <div id="call-center-three">
+                                <img src="/assets/telefonica/marker.png">
+
+                                <div class="chart">
+                                    <app-nvd3 [options]="nvd3CallCenterThreeOptions" [data]="nvd3CallCenterThreeData"
+                                        config="{refreshDataOnly: true, deepWatchData: true}">
+                                    </app-nvd3>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </mat-card>
+
+            <mat-card style="width:50%; padding: 0; margin-left: 1em;">
+
+                <div class="p-16" fxLayout="column">
+                    <div class="p-16 accent">
+                        <div class="h3">{{selectedTab}} - Top 10 Words (Sorted by Frequency)</div>
+                    </div>
+
+
+                    <div class="mat-elevation-z3 tables">
+
+
+                        <table mat-table *ngIf="selectedTab == 'Seville'" [dataSource]="dataSourceS">
+
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef> # </th>
+                                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="minute">
+                                <th mat-header-cell *matHeaderCellDef> Last Minute </th>
+                                <td mat-cell *matCellDef="let element"> {{element.minute}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="hour">
+                                <th mat-header-cell *matHeaderCellDef> Last Hour </th>
+                                <td mat-cell *matCellDef="let element"> {{element.hour}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="day">
+                                <th mat-header-cell *matHeaderCellDef> Last 24h </th>
+                                <td mat-cell *matCellDef="let element"> {{element.day}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <table mat-table *ngIf="selectedTab == 'Madrid'" [dataSource]="dataSourceM">
+
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef> # </th>
+                                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="minute">
+                                <th mat-header-cell *matHeaderCellDef> Last Minute </th>
+                                <td mat-cell *matCellDef="let element"> {{element.minute}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="hour">
+                                <th mat-header-cell *matHeaderCellDef> Last Hour </th>
+                                <td mat-cell *matCellDef="let element"> {{element.hour}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="day">
+                                <th mat-header-cell *matHeaderCellDef> Last 24h </th>
+                                <td mat-cell *matCellDef="let element"> {{element.day}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <table mat-table *ngIf="selectedTab == 'Barcelona'" [dataSource]="dataSourceB">
+
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef> # </th>
+                                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="minute">
+                                <th mat-header-cell *matHeaderCellDef> Last Minute </th>
+                                <td mat-cell *matCellDef="let element"> {{element.minute}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="hour">
+                                <th mat-header-cell *matHeaderCellDef> Last Hour </th>
+                                <td mat-cell *matCellDef="let element"> {{element.hour}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="day">
+                                <th mat-header-cell *matHeaderCellDef> Last 24h </th>
+                                <td mat-cell *matCellDef="let element"> {{element.day}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="25px"
+        style="padding: 25px;">
+        <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+            <mat-card style="width:100%; padding: 0px;">
+                <div class="p-16" fxLayout="column">
+                    <div class="p-16 accent">
+                        <div class="h3">Telefonica Call Centers - Charts</div>
+                    </div>
+                    <div>
+                        <mat-tab-group (selectedTabChange)="setTab($event)" fxLayout="column" fxFlex color="accent"
+                            backgroundColor="accent">
+
+                            <mat-tab label="Seville">
+                                <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+                                    <div style="width:100%">
+
+
+
+                                        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                                            fxLayoutAlign="start center" fxLayoutGap="25px">
+
+                                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center"
+                                                style="width: 45%;">
+                                                <mat-card style="width:100%; padding: 0px;">
+                                                    <div class="p-16" fxLayout="column">
+                                                        <div class="p-16 accent">
+                                                            <div class="h3">Seville - Live Stats (Time Window : 1 min)
+                                                            </div>
+                                                        </div>
+                                                        <div class="chart-container">
+
+                                                            <canvas baseChart [datasets]="lineChartDataMS"
+                                                                [labels]="lineChartLabelsMS"
+                                                                [options]="lineChartOptionsMinute"
+                                                                [legend]="lineChartLegend"
+                                                                [chartType]="lineChartType"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+
+                                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center"
+                                                style="width: 55%;">
+                                                <mat-card style="width:100%; padding: 0px;">
+                                                    <div class="p-16" fxLayout="column">
+                                                        <div class="p-16 accent">
+                                                            <div class="h3">Seville- Live Stats & Daily AVG (Time Window
+                                                                : 1 hour) </div>
+                                                        </div>
+                                                        <div class="chart-container">
+
+                                                            <canvas baseChart [datasets]="lineChartDataDS"
+                                                                [labels]="lineChartLabelsDS"
+                                                                [options]="lineChartOptionsDay"
+                                                                [legend]="lineChartLegend"
+                                                                [chartType]="lineChartType"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Madrid">
+                                <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+                                    <div style="width:100%">
+
+
+
+                                        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                                            fxLayoutAlign="start center" fxLayoutGap="25px">
+
+                                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center"
+                                                style="width: 45%;">
+                                                <mat-card style="width:100%; padding: 0px;">
+                                                    <div class="p-16" fxLayout="column">
+                                                        <div class="p-16 accent">
+                                                            <div class="h3">Madird - Live Stats (Time Window : 1 min)
+                                                            </div>
+                                                        </div>
+                                                        <div class="chart-container">
+
+                                                            <canvas baseChart [datasets]="lineChartDataMM"
+                                                                [labels]="lineChartLabelsMM"
+                                                                [options]="lineChartOptionsMinute"
+                                                                [legend]="lineChartLegend"
+                                                                [chartType]="lineChartType"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+
+                                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center"
+                                                style="width: 55%;">
+                                                <mat-card style="width:100%; padding: 0px;">
+                                                    <div class="p-16" fxLayout="column">
+                                                        <div class="p-16 accent">
+                                                            <div class="h3">Madrid -Live Stats & Daily AVG (Time Window
+                                                                : 1 hour) </div>
+                                                        </div>
+                                                        <div class="chart-container">
+
+                                                            <canvas baseChart [datasets]="lineChartDataDM"
+                                                                [labels]="lineChartLabelsDM"
+                                                                [options]="lineChartOptionsDay"
+                                                                [legend]="lineChartLegend"
+                                                                [chartType]="lineChartType"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Barcelona">
+                                <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+                                    <div style="width:100%">
+
+
+
+                                        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                                            fxLayoutAlign="start center" fxLayoutGap="25px">
+
+                                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center"
+                                                style="width: 45%;">
+                                                <mat-card style="width:100%; padding: 0px;">
+                                                    <div class="p-16" fxLayout="column">
+                                                        <div class="p-16 accent">
+                                                            <div class="h3">Barcelona - Live Stats (Time Window : 1 min)
+                                                            </div>
+                                                        </div>
+                                                        <div class="chart-container">
+
+                                                            <canvas baseChart [datasets]="lineChartDataMB"
+                                                                [labels]="lineChartLabelsMB"
+                                                                [options]="lineChartOptionsMinute"
+                                                                [legend]="lineChartLegend"
+                                                                [chartType]="lineChartType"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+
+                                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center"
+                                                style="width: 55%;">
+                                                <mat-card style="width:100%; padding: 0px;">
+                                                    <div class="p-16" fxLayout="column">
+                                                        <div class="p-16 accent">
+                                                            <div class="h3">Barcelona - Live Stats & Daily AVG (Time
+                                                                Window : 1 hour) </div>
+                                                        </div>
+                                                        <div class="chart-container">
+
+                                                            <canvas baseChart [datasets]="lineChartDataDB"
+                                                                [labels]="lineChartLabelsDB"
+                                                                [options]="lineChartOptionsDay"
+                                                                [legend]="lineChartLegend"
+                                                                [chartType]="lineChartType"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

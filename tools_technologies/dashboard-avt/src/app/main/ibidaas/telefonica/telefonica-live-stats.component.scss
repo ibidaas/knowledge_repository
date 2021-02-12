@@ -1,0 +1,99 @@
+@import "src/@fuse/scss/fuse";
+.chart-container {
+    width: 100%;
+    height: 600px
+}
+
+.tables {
+    table {
+        width: 100%;
+        height: 550px;
+    }
+}
+
+.nvtooltip.xy-tooltip {
+    background-color: white;
+    z-index: 999;
+}
+
+telefonica-live-stats {
+    #telefonika-spain-map {
+        //width:500px;
+        height: 560px;
+        max-height: 600px;
+        display: block;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: relative;
+        #call-center-one {
+            position: absolute;
+            top: 69%;
+            left: 27%;
+            width: 162px;
+            height: 162px;
+            img {
+                position: absolute;
+                top: -45px;
+                left: 63px;
+                width: 35px;
+                height: 35px;
+            }
+            .chart {
+                width: 160px;
+                position: absolute;
+                background-color: rgba(255, 255, 255, 0.5);
+                border-radius: 80px;
+                padding-top: 5px;
+                padding-left: 1px;
+                padding-bottom: 3px;
+            }
+        }
+        #call-center-two {
+            position: absolute;
+            top: 32%;
+            left: 37%;
+            width: 162px;
+            height: 162px;
+            img {
+                position: absolute;
+                top: -45px;
+                left: 63px;
+                width: 35px;
+                height: 35px;
+            }
+            .chart {
+                width: 160px;
+                position: absolute;
+                background-color: rgba(255, 255, 255, 0.5);
+                border-radius: 80px;
+                padding-top: 5px;
+                padding-left: 1px;
+                padding-bottom: 3px;
+            }
+        }
+        #call-center-three {
+            position: absolute;
+            top: 27%;
+            left: 67%;
+            width: 162px;
+            height: 162px;
+            img {
+                position: absolute;
+                top: -45px;
+                left: 63px;
+                width: 35px;
+                height: 35px;
+            }
+            .chart {
+                width: 160px;
+                position: absolute;
+                background-color: rgba(255, 255, 255, 0.5);
+                border-radius: 80px;
+                padding-top: 5px;
+                padding-left: 1px;
+                padding-bottom: 3px;
+            }
+        }
+    }
+}

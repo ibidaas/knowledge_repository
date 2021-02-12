@@ -1,0 +1,28 @@
+<div  >
+  <h2 mat-dialog-title> Random Forest </h2> 
+  <mat-dialog-content> <b>Description:</b> 
+      <p>
+        Random forest is a supervised learning algorithm which is used for both classification as well as regression. 
+        But however, it is mainly used for classification problems. As we know that a forest is made up of trees and more trees means
+        more robust forest. Similarly, random forest algorithm creates decision trees on data samples and then gets the prediction from 
+        each of them and finally selects the best solution by means of voting. It is an ensemble method which is better than a single decision 
+        tree because it reduces the over-fitting by averaging the result.
+      </p>
+      <b>Parameters:</b>
+      <ul>
+        <li>Number of maximum features: p </li>
+        <li>Numper of estimators: n</li>
+      </ul>
+      
+      <b>When to use: </b>
+      <ul>
+        <li>If you have labeled data</li>
+        <li>If the output of the model is a class (classification)</li>
+        <li>If the output of the model is a number (regression)</li>
+      </ul>
+      
+  </mat-dialog-content>
+  <div mat-dialog-actions align="end">
+      <button class="mat-raised-button" (click)="close()">Close</button>
+    </div>
+</div>

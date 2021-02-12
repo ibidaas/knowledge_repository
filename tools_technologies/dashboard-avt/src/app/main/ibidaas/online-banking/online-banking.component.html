@@ -1,0 +1,111 @@
+<div fxLayout="column" fxLayoutAlign="start" style=" width: 100%; font-size: initial;">
+
+  <!-- <div style="margin-top: 1em;">
+
+
+    <button mat-raised-button (click)='addLabel()'> Add random label</button>
+
+    <button style="margin-left: 0.5em;" mat-raised-button (click)='addSame()'> Add/Update same label</button>
+
+  </div> -->
+
+
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="25px">
+    <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+
+
+      <mat-card style="width:100%; padding: 0px; margin: auto; height: 700px;">
+        <div class="p-16" fxLayout="column">
+          <div class="p-16 accent">
+            <div class="h3"> Transaction's Categories Amount - CAIXA Online Banking </div>
+          </div>
+
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+
+            <div style="display: block; width: 100%; height: 600px; margin: auto; margin-top:1em;">
+              <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                [legend]="barChartLegend" [chartType]="barChartType" [colors]="barChartColors">
+              </canvas>
+            </div>
+
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card style="width:70%; padding: 0px; margin: auto; height: 700px; margin-left: 1em;">
+        <div class="p-16" fxLayout="column">
+          <div class="p-16 accent">
+            <div class="h3"> Transaction's Categories Amount (%) </div>
+          </div>
+
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+            <div style="display: block; width: 100%; height: 400px; margin: auto; margin-top:5em;">
+              <canvas baseChart [data]="pieChartData" [labels]="barChartLabels" [chartType]="pieChartType"
+                [options]="pieChartOptions" [colors]="barChartColors" [legend]="pieChartLegend">
+              </canvas>
+            </div>
+
+
+          </div>
+        </div>
+      </mat-card>
+
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="25px"
+    style="padding: 25px;">
+
+    <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+
+      <mat-card style="width:100%; padding: 0px; margin: auto;">
+        <div class="p-16" fxLayout="column">
+          <div class="p-16 accent">
+            <div class="h3">Live Transaction's Categories Growth Table </div>
+          </div>
+
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <table mat-table [dataSource]="dataSource" matSort>
+
+              <ng-container matColumnDef="label">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+                <td mat-cell *matCellDef="let element"> {{element.label}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="current">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Amount </th>
+                <td mat-cell *matCellDef="let element"> {{element.current}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="previous">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Amount</th>
+                <td mat-cell *matCellDef="let element"> {{element.previous}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="percentagechange">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Growth Rate </th>
+                <td mat-cell *matCellDef="let element"> + {{element.percentagechange}} %</td>
+              </ng-container>
+
+              <ng-container matColumnDef="rule">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Rule ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.rule}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </div>
+      </mat-card>
+
+    </div>
+  </div>
+
+
+
+
+
+</div>

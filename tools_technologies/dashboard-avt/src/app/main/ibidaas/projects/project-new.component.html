@@ -1,0 +1,554 @@
+<spinner [loading]="loadingSpinner" [fullscreen]="true"></spinner>
+
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+    <!--
+	<button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+		{{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+	</button>
+	-->
+    <div class="mat-elevation-z8">
+        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+
+            <mat-step [stepControl]="formGroupProject">
+
+                <form [formGroup]="formGroupProject" class="p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto">
+                    <ng-template matStepLabel>PROJECT</ng-template>
+
+                    <div class="h2 mb-24">Project Details</div>
+
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" fxLayoutGap="25px">
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <input matInput placeholder="Name" formControlName="Name" required>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <mat-select placeholder="Select Project Type" formControlName="ProjectType"
+                                (selectionChange)="projectTypeChange($event)" required>
+                                <mat-option *ngFor="let type of projectTypes" [value]="type.value"
+                                    [disabled]="type.value == 1">
+                                    {{type.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" fxLayoutGap="25px">
+                        <mat-form-field fxFlex="100" class="pr-4">
+                            <input matInput placeholder="Description" formControlName="Description" required>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" fxLayoutGap="25px">
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <mat-select placeholder="Select Data Processing Mode" formControlName="DataProcessingType"
+                                (selectionChange)="dataProcessingTypeChange($event)" required>
+                                <mat-option *ngFor="let type of processingTypes" [value]="type.value">
+                                    {{type.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <mat-select placeholder="Input Selection" formControlName="InputSelection"
+                                (selectionChange)="experimentDatasourceTypeChange($event)" required>
+                                <mat-option *ngFor="let type of inputSelection" [value]="type.value">
+                                    {{type.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf='projectId==1 ||projectId==4' fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                        fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="25px">
+
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <mat-select placeholder="Data Selection" formControlName="DataSelection"
+                                (selectionChange)="experimentDataTypeChange($event)" required>
+                                <mat-option *ngFor="let type of DataSelection" [value]="type.value">
+                                    {{type.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" fxLayoutGap="25px" style="margin-top: 20px">
+
+                        <mat-checkbox fxFlex="50" class="pr-4" formControlName="UseDefaultDockerImg"
+                            (change)="onUseDefaultDockerImgChange($event)">Use Default Docker Image</mat-checkbox>
+
+                        <mat-form-field fxFlex="50" class="pr-4"
+                            *ngIf="!formGroupProject.controls['UseDefaultDockerImg'].value">
+                            <input matInput placeholder="Docker Image From DockerHub (..Image Name..)"
+                                formControlName="DockerImage" required>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" fxLayoutGap="25px" style="margin-top:20px;"
+                        *ngIf="formGroupProject.controls['ProjectType'].value === 2">
+                        <button mat-raised-button color="orange" style="max-width: 190px" [disabled]="isReadOnly"
+                            (click)="uploadAnalysisCode()">Upload Analysis Code</button>
+
+                        <div *ngIf="!isReadOnly">
+                            Your algorithm should be placed in a .zip file and uploaded to your project. <br />
+                            You can expand the following code templates or upload your entirely custom code. <br />
+                            <br />
+
+                            <div style="text-align: center;">
+                                <a href="assets/random_forest.zip" download> random_forest.zip </a> &nbsp; &nbsp;
+                                <a href="assets/admm_log_reg.zip" download> admm_log_reg.zip </a>
+                            </div>
+                            <!--  <a href="#">IBiDaaS custom algorithms specification</a> (see also the provided <a href="#">example</a>) -->
+                        </div>
+
+
+                        <div *ngIf="isReadOnly">
+                            {{uploadedProjectFileName}}
+                        </div>
+                    </div>
+
+                    <mat-divider style="margin-top: 35px"></mat-divider>
+
+                    <!-- <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" 
+                        fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="25px"
+                        style="margin-top:40px;">
+                            <button mat-raised-button color="accent" style="margin-top:20px;"
+                            (click)="startFabrication()" *ngIf="!isReadOnly">START FABRICATION</button>
+
+                            <div style="color:green; font-weight:500; padding-top: 10px;" *ngIf="fabricationCompleted">Completed - id: {{fabricationGeneratedId}}</div>
+                        </div> -->
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center center"
+                        fxFlex="1 0 auto" fxLayoutGap="25px" style="margin-top:40px;">
+                        <div class="stepper-nav-buttons" *ngIf="!isReadOnly">
+                            <button mat-raised-button color="primary"
+                                [disabled]="isReadOnly || !this.formGroupProject.valid || this.projectFile == null || this.projectFile.length === 0"
+                                (click)="proceedProjectClicked()">PROCEED</button>
+                        </div>
+                    </div>
+
+
+                </form>
+
+                <div style="padding: 20px; border:2pt solid silver;" *ngIf="isReadOnly">
+
+                    <h2>Experiments</h2>
+
+                    <div style="width:100%; text-align: right; margin-top: -40px;">
+                        <button mat-raised-button color="accent" matStepperNext (click)="addNewExperiment()">ADD
+                            EXPRERIMENT</button>
+                    </div>
+
+                    <x-grid [data]="data" [columns]="columns" (selectRow)="experimentRowClicked($event)"
+                        (deleteRow)="deteleExperiment($event)" (stopRow)="stopExperiment($event)"></x-grid>
+                </div>
+
+            </mat-step>
+
+
+
+
+            <mat-step [stepControl]="formGroupExperiment">
+
+                <form [formGroup]="formGroupExperiment" class="p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto">
+                    <ng-template matStepLabel>EXPERIMENT</ng-template>
+
+                    <div class="h2 mb-24">Experiment Details</div>
+
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" fxLayoutGap="25px">
+                        <mat-form-field fxFlex="100" class="pr-4">
+                            <input matInput placeholder="Name" formControlName="Name" required>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" fxLayoutGap="25px" *ngIf="showExperimentDatasourceName">
+                        <!-- <mat-form-field fxFlex="50" class="pr-4">
+                                <mat-select placeholder="Select Datasource" formControlName="DatasourceType" (selectionChange)="experimentDatasourceTypeChange($event)" required>
+                                    <mat-option *ngFor="let type of experimentDatasourceTypes" [value]="type.value">
+                                        {{type.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+
+                        <mat-form-field fxFlex="100" class="pr-4">
+                            <mat-select placeholder="Datasource Name" formControlName="DatasourceName" required
+                                (selectionChange)="CSVpreview()">
+                                <mat-option *ngFor="let type of experimentDatasourceNames" [value]="type.value">
+                                    {{type.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="h3 mb-24" fxFlex="100" *ngIf="csvData"> CSV Preview
+                        <table id="CVS" class="table table-hover ">
+                            <thead>
+                                <tr>
+                                    <th scope="col" *ngFor="let old of head" text-center>
+                                        {{ old }}
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let data of tab">
+                                    <td *ngFor="let cell of data">
+                                        {{ cell }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <!-- 
+                                <ng-container [matColumnDef]="column" >
+                              <td mat-cell *matCellDef="let element"> {{element[tab]}} </td>
+                            </ng-container>
+                          
+                            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+                          -->
+
+
+
+
+                    <div fxLayout="column" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+                        fxFlex="1 1 auto" fxLayoutGap="25px"
+                        style="margin-top: 20px; background-color:#f6f6f5; padding:25px"
+                        *ngIf="+this.projectId < 20 && +this.projectId > 0 && analysisAlgorithm.length > 0">
+
+                        <!-- <mat-form-field fxFlex="100" class="pr-4">
+                                <mat-select placeholder="Select Analysis Algorithm" formControlName="AnalysisAlgorithm" (selectionChange)="analysisAlgorithmChange($event)" required>
+                                    <mat-option *ngFor="let type of analysisAlgorithmTypes" [value]="type.value">
+                                        {{type.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+
+                        <ng-container>
+                            <div class="h3 mb-16">Parameters</div>
+
+                            <mat-form-field fxFlex="100" class="pr-4" *ngFor="let param of analysisAlgorithm">
+
+                                <ng-container *ngIf="param.type === 'list'">
+                                    <mat-select placeholder="{{param.label}}" formControlName="{{param.name}}">
+                                        <mat-option *ngFor="let type of param.datasource" [value]="type.value">
+                                            {{type.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </ng-container>
+
+                                <ng-container *ngIf="param.type === 'boolean'">
+
+                                    <mat-select placeholder="{{param.label}}" formControlName="{{param.name}}">
+                                        <mat-option value="false">
+                                            False
+                                        </mat-option>
+                                        <mat-option value="true">
+                                            True
+                                        </mat-option>
+                                    </mat-select>
+
+                                </ng-container>
+
+
+
+                                <ng-container *ngIf="param.type === 'number'">
+                                    <input matInput placeholder="{{param.label}}" formControlName="{{param.name}}">
+                                </ng-container>
+
+                            </mat-form-field>
+                        </ng-container>
+
+                    </div>
+
+                    <div fxLayout="column" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+                        fxFlex="1 1 auto" fxLayoutGap="25px" style="margin-top: 25px;"
+                        *ngIf="+this.projectId >= 19 || +this.projectId < 0">
+
+                        <div class="h3 mb-16">Command</div>
+
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <input matInput placeholder="Script" formControlName="Command" required
+                                (focusout)="commandFocusOut($event)">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <input matInput placeholder="Full Command" formControlName="FullCommand">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+                        fxFlex="1 1 auto" fxLayoutGap="25px" style="margin-top: 25px;"
+                        *ngIf="+this.projectId >= 19 || +this.projectId < 0">
+
+                        <div class="h3 mb-24" fxFlex="100">Jupiter Notebooks</div>
+
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <mat-select placeholder="Select Notebook" formControlName="Jupiters">
+                                <mat-option value='-'>-</mat-option>
+                                <mat-option *ngFor="let any of jupiters" [value]="any">
+                                    {{any}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+
+
+
+
+                    <div fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+                        fxFlex="1 1 auto" fxLayoutGap="25px" style="margin-top: 25px;">
+                        <div class="h3 mb-24" fxFlex="100">Computational Resources</div>
+
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <mat-select placeholder="Select Cores" formControlName="Cores" required>
+                                <mat-option *ngFor="let type of experimentCoresTypes" [value]="type.value">
+                                    {{type.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="50" class="pr-4">
+                            <mat-select placeholder="Select Ram" formControlName="Ram" required>
+                                <mat-option *ngFor="let type of experimentRamTypes" [value]="type.value">
+                                    {{type.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+
+
+
+                    <button mat-raised-button color="accent" style="margin-top:20px; max-width: 140px;"
+                        *ngIf="formGroupExperiment.enabled && showStartAnalysis" (click)="startAnalysis()">START
+                        ANALYSIS</button>
+                    <div style="color:green; font-weight:500; padding-top: 10px"
+                        *ngIf="analysisCompleted && selectedExperiment == null">Completed - id: {{analysisGeneratedId}}
+                    </div>
+
+                    <div class="stepper-nav-buttons">
+                        <button mat-raised-button matStepperNext color="primary"
+                            *ngIf="analysisCompleted || selectedExperiment !== null">PROCEED</button>
+                    </div>
+
+                </form>
+
+            </mat-step>
+
+            <mat-step>
+                <ng-template matStepLabel>RESULTS</ng-template>
+                <!-- <ng-template *ngIf="+projectId <= 19" matStepLabel>VISUALIZATION</ng-template>
+                <ng-template *ngIf="+projectId > 19" matStepLabel>EXPERIMENT RESULTS</ng-template> -->
+
+                <div class="fuse-card auto-width mb-16" *ngIf="+projectId === 12">
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">K-means Clustering of Front Month NYMEX 1:1 Crack Spread (1 year
+                                lag)</span>
+                        </div>
+                    </div>
+                    <div>
+                        <app-nvd3 #nvd3KmeansChart [options]="nvd3KmeansChartOptions" [data]="nvd3KmeansChartOutData">
+                        </app-nvd3>
+                    </div>
+                </div>
+
+                <div class="fuse-card auto-width mb-16" *ngIf="+projectId === 13">
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">K-means Clustering</span>
+                        </div>
+                    </div>
+                    <div>
+                        <mat-tab-group fxLayout="column" fxFlex color="accent" backgroundColor="accent"
+                            (animationDone)="onKmeansAnimationDone($event)"
+                            (selectedTabChange)="onKmeansSelectedTabChange($event)">
+                            <mat-tab label="Training Data - Ground Truth">
+                                <app-nvd3 #nvd3KmeansChart [options]="nvd3KmeansChartOptions"
+                                    [data]="nvd3KmeansChartOutDataEvaluationGroundTruth">
+                                </app-nvd3>
+                            </mat-tab>
+                            <mat-tab label="Training Data - KMeans Predictions">
+                                <app-nvd3 #nvd3KmeansChartPredictions [options]="nvd3KmeansChartOptions2"
+                                    [data]="nvd3KmeansChartOutDataEvaluationPredictions">
+                                </app-nvd3>
+                            </mat-tab>
+                            <mat-tab label="Test Data - Ground Truth">
+                                <app-nvd3 #nvd3KmeansChartTestDataGroundTruth [options]="nvd3KmeansChartOptions"
+                                    [data]="nvd3KmeansChartOutDataEvaluationTestDataGroundTruth">
+                                </app-nvd3>
+                            </mat-tab>
+                            <mat-tab label="Test Data - KMeans Predictions">
+                                <app-nvd3 #nvd3KmeansChartTestPredictions [options]="nvd3KmeansChartOptions"
+                                    [data]="nvd3KmeansChartOutDataEvaluationTestPredictions">
+                                </app-nvd3>
+                            </mat-tab>
+                            <mat-tab label="Confusion Matrix on Test Data - Ground Truth  vs K-means Predictions">
+                                <div class="p-16" class="caixa-stream-processing-table-container">
+                                    <table mat-table [dataSource]="dataSource" matSort style="min-width:1800px">
+
+                                        <ng-container matColumnDef="{{column}}"
+                                            *ngFor="let column of displayedColumns; let i = index">
+
+                                            <ng-container matColumnDef="{{column}}">
+                                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+                                                <td mat-cell *matCellDef="let row; let j = index"
+                                                    [ngClass]="{'confusion-matrix-highlight': i === j}">
+                                                    {{row[column]}}
+                                                </td>
+                                            </ng-container>
+
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+
+                                    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                </div>
+
+                <div class="fuse-card auto-width mb-16"
+                    *ngIf="(+projectId === 13 || +projectId === 12) && showClusterBarChart">
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">Number of Points per Cluster</span>
+                        </div>
+                    </div>
+                    <div style="display: block; height: 320px;">
+                        <canvas #baseChactkMeansBar="base-chart" baseChart
+                            [datasets]="kMeansBarOutChartOptions.datasets" [labels]="kMeansBarOutChartOptions.labels"
+                            [colors]="kMeansBarOutChartOptions.colors" [options]="kMeansBarOutChartOptions.options"
+                            [chartType]="kMeansBarOutChartOptions.chartType">
+                        </canvas>
+                    </div>
+                </div>
+
+                <div class="fuse-card auto-width mb-16" *ngIf="+projectId === 1 || +projectId === 4">
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">People Per Relationships</span>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <div class="py-8 px-12 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                                (click)="selectedDay = 'today'" [ngClass]="{'accent': selectedDay === 'today'}">
+                                Today
+                            </div>
+                        </div>
+                    </div>
+                    <div class="position-relative h-368 pb-16">
+                        <canvas baseChart [datasets]="widgets.wdgStatsVisibility.datasets[selectedDay]"
+                            [labels]="widgets.wdgStatsVisibility.labels" [colors]="widgets.wdgStatsVisibility.colors"
+                            [options]="widgets.wdgStatsVisibility.options"
+                            [chartType]="widgets.wdgStatsVisibility.chartType">
+                        </canvas>
+                    </div>
+                </div>
+
+                <div class="fuse-card auto-width mb-16" *ngIf="+projectId === 10">
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">Final Objective: {{lassoADMChartData.final_objective}}</span>
+                            <span class="h2">Has Converged: {{lassoADMChartData.has_converged}}</span>
+                            <span class="h2">Total Time: {{lassoADMChartData.total_time}}</span>
+                        </div>
+                    </div>
+
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">ADM LASSO Prires</span>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <div class="py-8 px-12 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                                (click)="selectedDay = 'today'" [ngClass]="{'accent': selectedDay === 'today'}">
+                                Today
+                            </div>
+                        </div>
+                    </div>
+                    <div class="position-relative h-368 pb-16">
+                        <canvas #lassoADMPriresChart="base-chart" baseChart
+                            [datasets]="widgets.wdgStatsVisibility.datasets[selectedDay]"
+                            [labels]="widgets.wdgStatsVisibility.labels" [colors]="widgets.wdgStatsVisibility.colors"
+                            [options]="widgets.wdgStatsVisibility.options"
+                            [chartType]="widgets.wdgStatsVisibility.chartType">
+                        </canvas>
+                    </div>
+
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">ADM LASSO Dualres</span>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <div class="py-8 px-12 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                                (click)="selectedDay = 'today'" [ngClass]="{'accent': selectedDay === 'today'}">
+                                Today
+                            </div>
+                        </div>
+                    </div>
+                    <div class="position-relative h-368 pb-16">
+                        <canvas #lassoADMdualresChart="base-chart" baseChart
+                            [datasets]="widgets.wdgStatsVisibility.datasets[selectedDay]"
+                            [labels]="widgets.wdgStatsVisibility.labels" [colors]="widgets.wdgStatsVisibility.colors"
+                            [options]="widgets.wdgStatsVisibility.options"
+                            [chartType]="widgets.wdgStatsVisibility.chartType">
+                        </canvas>
+                    </div>
+
+                </div>
+
+                <!-- <div class="fuse-card auto-width mb-16" *ngIf="+projectId === 82">
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">Qviz Caixa Visualizer</span>
+                        </div>
+                    </div>
+                    <div>
+                        <iframe width="100%" height="100%" frameBorder="0" [src]="urlSafe"></iframe>
+
+                    </div>
+                </div> -->
+
+                <div class="fuse-card auto-width mb-16">
+                    <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <span class="h2">Description: {{experimentDownloadDetails.description}}</span>
+                            <span class="h2">Download URL: {{experimentDownloadDetails.referall}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stepper-nav-buttons">
+                    <button mat-raised-button matStepperPrevious color="warn">BACK</button>
+                    <a class="success-download-link" href="{{experimentDownloadDetails.referall}}">
+                        DOWNLOAD FILE
+                    </a>
+                    <a *ngIf="this.formGroupExperiment.controls['Jupiters'].value != '-' " class="success-download-link"
+                        style="background-color: #039be5!important; margin-left: 0.4em;"
+                        href="{{BasicUrl+'/expert_viz/voila/render'+this.formGroupExperiment.controls['Jupiters'].value}}"
+                        target="_blank">
+                        VOILA VISUALIZER
+                    </a>
+                    <!-- <button mat-raised-button (click)="stepper.reset()" color="purple">RESET</button> -->
+                </div>
+
+
+
+            </mat-step>
+
+        </mat-horizontal-stepper>
+    </div>
+</div>

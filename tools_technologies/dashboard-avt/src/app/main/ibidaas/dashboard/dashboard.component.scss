@@ -1,0 +1,41 @@
+@import "src/@fuse/scss/fuse";
+
+
+            .board-list-item {
+                width: 380px;
+                height: 370px;
+                padding: 24px 0;
+                margin: 80px;
+                border-radius: 10px;
+                background:steelblue;
+                transition: box-shadow 150ms ease-in;
+                cursor: pointer;
+
+                &:hover {
+                    @include mat-elevation(20);
+                }
+
+                .board-name {
+                    padding: 16px 32px 0 32px;
+                    font-weight: 300;
+                    font-size: 16px;
+                    text-align: center;
+                    color:white;
+                }
+
+            }
+    
+
+
+
+.homebutton{
+    width: 400px;
+    padding: 45px 25px;
+    min-height: 300px;
+}
+
+.homebutton .mat-card-actions{
+    position: absolute;
+    bottom: 25px;
+
+}

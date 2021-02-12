@@ -1,0 +1,66 @@
+@import "../ibidaas.scss";
+
+.nvtooltip.xy-tooltip{
+    background-color: white;
+    z-index: 999;
+}
+
+.dashboard-section{
+    margin-bottom: 15px;
+}
+
+mat-card-header.expert-mode-card-header.mat-card-header {
+    min-height: 100px;
+}
+
+mat-card-header.self-service-card-header.mat-card-header {
+    min-height: 70px;
+}
+
+mat-card-header.ibidaas-use-case-card-header.mat-card-header {
+    min-height: 100px;
+}
+
+mat-card-content.expert-mode-card-content.mat-card-content {
+    min-height: 77px;
+}
+
+mat-card-content.self-service-card-content.mat-card-content {
+    min-height: 115px;
+}
+
+mat-card-content.ibidaas-use-case-card-content.mat-card-content {
+    min-height: 125px;
+}
+
+.create-new img.mat-card-image {
+    max-width: 270px !important;
+    margin: 0 auto;
+    padding: 50px;
+}
+.create-new mat-card{
+    border: 2px dashed #333;
+    box-shadow: none;
+}
+
+.create-new .mat-card-header .mat-card-title{
+    margin: 0 auto !important;
+}
+
+.rmv-cutom-project{
+    position: absolute;
+    right: -6px;
+    top: -10px;
+    background-color: red;
+    border-radius: 20px;
+    padding-right: 4px;
+    padding-left: 4px;
+    padding-top: 4px;
+    cursor: pointer;
+
+    i{
+        color: white;
+        font-size: 20px;
+        cursor: pointer !important;
+    }
+}
