@@ -66,7 +66,7 @@
     "leaflet": "1.6.0",
     "leaflet-heatmap": "1.0.0",
     "leaflet-timedimension": "1.1.1",
-    "lodash": "4.17.11",
+    "lodash": "4.17.19",
     "material-table": "^1.69.1",
     "moment": "2.22.2",
     "ng2-charts": "1.6.0",
