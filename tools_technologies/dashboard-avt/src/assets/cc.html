@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <div class="row" style="z-index:9999999;position:fixed;height:100vh;width:100vw;top:0;left:0;background:white;color:black">
+        <h1>Calls</h1>
+        <div id="stats">
+
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            var $stats = $("#stats");
+            var totalCallsMade = 0;
+            var calls = [];
+            var ccOperators = [170, 80, 70];
+            var ccCalls = [0, 0, 0];
+            var ccFinishedCalls = [0, 0, 0];
+            var ccWaitDuration = [0, 0, 0];
+            var ccResolutionDuration = [0, 0, 0];
+            var ccDroppedCalls = [0, 0, 0];
+            var ccPositiveCalls = [0, 0, 0];
+            var ccNeutralCalls = [0, 0, 0];
+            var ccNegativeCalls = [0, 0, 0];
+
+
+            function rnd(n) { //return 0 .. n-1
+                return Math.floor((Math.random() * n));
+            }
+
+            function smartPush(ar, el) {
+                for (var i = 0; i < ar.length; i++)
+                    if (ar[i] == null) { ar[i] = el; return; }
+                ar.push(el);
+            }
+
+            function newCalls() {
+                var n = rnd(10);
+                for (var i = 0; i < n; i++) {
+                    var received = new Date();
+                    received.setTime(received.getTime() - 1000 * 55);
+
+                    var cc = rnd(3);
+                   
+                    smartPush(calls, { received: received, cc: cc, op: null, patience: 1000 * 60 + rnd(1000 * 60 * 7) });
+                    ccCalls[cc]++;
+                    totalCallsMade++;
+                }
+            }
+
+            function isOperatorOccupied(cc, op) {
+                for (var j = 0; j < calls.length; j++) {
+                    if (calls[j] == null) continue;
+                    if (calls[j].cc != cc) continue;
+                    if (calls[j].op == op) return true; 
+                }
+                return false;
+            }
+            function findFreeOperator(cc) {
+                for (var i = 0; i < ccOperators[cc]; i++) {
+                    if (!isOperatorOccupied(cc, i))
+                        return i;
+                }
+                return -1;
+            }
+            function processCalls() {
+                var now = new Date().getTime();
+                for (var i = 0; i < calls.length; i++) {
+                    var call = calls[i];
+                    if (!call) continue;
+                    if (now < call.received.getTime()) continue;
+
+                    if (call.op == null) {
+
+                        if (now > call.received.getTime() + call.patience) {
+                            //the customer was put on hold for too long and hung up ...
+                            calls[i] = null;
+                            ccFinishedCalls[call.cc]++;
+                            ccDroppedCalls[call.cc]++;
+                            ccWaitDuration[call.cc] += call.patience;
+                            continue;
+                        }
+
+                        //customer is still waiting, let's try to find an operator
+                        var op = findFreeOperator(call.cc);
+                        if (op == -1) {
+                            continue; // all operators in cc are busy, so we cannot assign one at this time
+                        }
+
+                        call.op = op;
+                        call.waitDuration = now - call.received.getTime();
+
+                        //we make up the duration  
+                        call.resolutionDuration = 1000 * 60 * 1 + rnd(1000 * 60 * 10);
+                    }
+
+                    //we are now dealing with a call that has been assigned to an operator
+                    if (now < call.received.getTime() + call.waitDuration + call.resolutionDuration) continue; //if the call is not complete yet
+                    calls[i] = null;
+                    ccFinishedCalls[call.cc]++;
+                    ccWaitDuration[call.cc] += call.waitDuration;
+                    ccResolutionDuration[call.cc] += call.resolutionDuration;
+
+                    //we make up the sentiment here
+                    call.sentiment = rnd(3) - 1;
+
+                    if (call.sentiment < 0) ccNegativeCalls[call.cc]++;
+                    else if (call.sentiment > 0) ccPositiveCalls[call.cc]++;
+                    else ccNeutralCalls[call.cc]++;
+
+
+
+
+                }
+            }
+            function writeStats() {
+                var ccs = "";
+                var dropped = 0, positive = 0, negative = 0, neutral = 0;
+                for (var i = 0; i < 3; i++) {
+                    ccs += "<br>CALL CENTER "+(i+1); 
+                    ccs += "<br>cc"+(i+1)+" total pending calls (on hold or with operator):" + (ccCalls[i]-ccFinishedCalls[i]); 
+                    ccs += "<br>cc"+(i+1)+" finished calls:" + ccFinishedCalls[i]; 
+                    ccs += "<br>cc"+(i+1)+" avg. wait duration:" + (ccWaitDuration[i]/ccFinishedCalls[i])/ 1000/ 60 +" min"; 
+                    ccs += "<br>cc"+(i+1)+" avg. resolution duration:" + (ccResolutionDuration[i]/(ccFinishedCalls[i]-ccDroppedCalls[i]))/ 1000/ 60 +" min"; 
+                    ccs += "<br>cc"+(i+1)+" avg. calls per operator:" + ((ccFinishedCalls[i]-ccDroppedCalls[i])/ccOperators[i]); 
+                    ccs += "<br>cc"+(i+1)+" dropped calls:" + (ccDroppedCalls[i]); 
+                    ccs += "<br>cc"+(i+1)+" positive calls:" + (ccPositiveCalls[i]); 
+                    ccs += "<br>cc"+(i+1)+" neutral calls:" + (ccNeutralCalls[i]); 
+                    ccs += "<br>cc"+(i+1)+" negative calls:" + (ccNegativeCalls[i]); 
+                    dropped += ccDroppedCalls[i];
+                    positive += ccPositiveCalls[i];
+                    neutral += ccNeutralCalls[i];
+                    negative += ccNegativeCalls[i];
+
+                }
+                var all = "";
+                all += "<br>total pending calls (on hold or with operator):" + (totalCallsMade-dropped-positive-neutral-negative); 
+                all += "<br>total dropped calls:" + dropped; 
+                all += "<br>total positive calls:" +positive; 
+                all += "<br>total neutral calls:" + neutral; 
+                all += "<br>total negative calls:" +negative; 
+                $stats.html("Total Calls Made:"+totalCallsMade+"<br>calls arrays length:" + calls.length + all + ccs);
+            }
+
+            function tick(silent) {
+                newCalls();
+                processCalls();
+                if (!silent)
+                    writeStats();
+
+            }
+
+            for (var i = 0; i < 10; i++) tick(false);
+            setInterval(tick, 1000 * 3);
+
+        })
+    </script>
+
+</body>
+</html>

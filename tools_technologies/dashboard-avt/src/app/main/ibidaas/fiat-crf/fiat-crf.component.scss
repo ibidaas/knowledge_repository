@@ -1,0 +1,33 @@
+@import "src/@fuse/scss/fuse";
+
+.nvtooltip.xy-tooltip{
+    background-color: white;
+    z-index: 999;
+}
+
+fiat-crf {
+    .fiat-crf-table-container{
+        width: 95vw;
+        margin: 0 auto;
+        overflow-x: scroll;
+    }
+    
+}
+
+.two{
+    background-color:#74eba9!important;
+    }
+
+.one{
+        background-color:#e9e08d!important;
+        }
+.zero{
+    background-color:#f17a7a!important;
+    }
+
+.chart-container {
+        position: relative;
+        margin: auto;
+        //height: 80vh;
+        //width: 80vw;
+      }

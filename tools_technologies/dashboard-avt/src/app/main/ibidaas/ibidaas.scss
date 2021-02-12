@@ -1,0 +1,266 @@
+/*
+@import "src/@fuse/scss/fuse";
+
+.main-widget {
+	display: flex;
+	flex-direction: column;
+}
+
+.content {
+	display: flex;
+	flex: 1 1 auto;
+	padding: 32px;
+	min-width: 0;
+
+	@include media-breakpoint('lt-lg') {
+		flex-direction: column;
+	}
+
+	.left {
+		display: flex;
+		flex-direction: column;
+		flex: 1 1 auto;
+		min-width: 0;
+
+		.widget {
+			flex: 1 1 auto;
+			min-width: 0;
+		}
+	}
+
+	.right {
+		display: flex;
+		flex: 0 0 auto;
+		width: 320px;
+		min-width: 320px;
+		max-width: 320px;
+
+		@include media-breakpoint('lt-lg') {
+			flex: 1 0 100%;
+			margin-top: 32px;
+			width: 100%;
+			min-width: 0;
+			max-width: none;
+		}
+
+		.fuse-card {
+
+			@include media-breakpoint('lt-lg') {
+				width: 100%;
+				min-width: 0;
+				max-width: none;
+			}
+		}
+	}
+}
+*/
+
+::ng-deep .mat-form-field-infix {
+	border-top: 0.54375em solid transparent;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+	margin-top: 20px;
+	max-width: 900px !important;
+	margin: 0px auto;
+}
+
+::ng-deep .mat-step-header {
+	margin-top: 20px !important;
+}
+
+::ng-deep .mat-stepper-horizontal-line {
+	margin-top: 20px !important;
+}
+
+::ng-deep .mat-step-label {
+	font-weight: bold !important;
+}
+::ng-deep .mat-step-label-active {
+	color: #008acc !important;
+}
+
+::ng-deep .mat-step-icon-selected {
+	background: #008acc !important;
+}
+
+::ng-deep .success {
+	background-color: green !important;
+	color: #fff !important;
+}
+
+::ng-deep .success-download-link{
+	background-color: green !important;
+    color: #fff !important;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+	box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+	text-decoration: none !important;
+}
+
+::ng-deep .mat-horizontal-stepper-content {
+	border-top: 1pt dashed #ccc;
+	padding-top:20px;
+}
+
+::ng-deep .stepper-nav-buttons {
+	text-align:center;
+}
+
+::ng-deep .stepper-nav-buttons button {
+	margin-left:5px;
+	margin-right:5px;
+}
+
+::ng-deep .mat-tab-body-content {
+	padding: 30px 20px 30px 20px;
+}
+
+::ng-deep .mat-tab-header {
+	background: #fdfdff;
+	color:#000;
+}
+
+::ng-deep body.theme-default .mat-tab-label {
+	color: rgba(0,0,0, .8);
+}
+
+::ng-deep .mat-tab-label-active {
+	color: rgba(0,0,0, 1);
+}
+
+::ng-deep .mat-tab-link {
+	color:#000 !important;
+}
+
+::ng-deep .mat-tab-group {
+	background:#fcfcfe;
+}
+
+::ng-deep .spinner {
+	margin: 10px auto 0;
+	width: 150px;
+	text-align: center;
+}
+::ng-deep .spinner>div {
+	width: 21px;
+	height: 21px;
+	background-color: rgba(255, 255, 255, 1);
+	margin-right: 7px;
+	border-radius: 100%;
+	display: inline-block;
+	-webkit-animation: keyframe-animation-spinner1 1.4s infinite ease-in-out both;
+	animation: keyframe-animation-spinner1 1.4s infinite ease-in-out both;
+}
+::ng-deep .spinner .bounce1 {
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+::ng-deep .spinner .bounce2 {
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+
+@-webkit-keyframes keyframe-animation-spinner1 {
+	0%,
+	80%,
+	100% {
+		-webkit-transform: scale(0)
+	}
+	40% {
+		-webkit-transform: scale(1.0)
+	}
+}
+@keyframes keyframe-animation-spinner1 {
+	0%,
+	80%,
+	100% {
+		-webkit-transform: scale(0);transform: scale(0);
+	}
+	40% {
+		-webkit-transform: scale(1.0);transform: scale(1.0);
+	}
+}
+
+::ng-deep.example-card {
+	max-width: 300px;
+	cursor: pointer;
+  }
+  
+::ng-deep .example-header-image {
+	background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+	background-size: cover;
+}
+
+::ng-deep .confusion-matrix-highlight{
+	background-color: #008acc;
+	color: #fff !important;
+}
+
+::ng-deep .caixa-stream-processing-table-container table td{
+	text-align: center;
+}
+
+::ng-deep .caixa-stream-processing-table-container table .mat-sort-header-button {
+    margin: 0 auto;
+}
+
+/*
+:host {
+
+    .content {
+
+        form {
+            width: 100%;
+            max-width: 800px !important;
+        }
+
+        .form-errors-model {
+            flex: 1;
+
+            code {
+                background: none !important;
+            }
+        }
+
+        .horizontal-stepper-wrapper,
+        .vertical-stepper-wrapper {
+            max-width: 800px;
+        }
+    }
+}
+*/
+
+
+
+
+
+table {
+	width: 100%;
+	td {
+		padding-top:15px;
+		padding-bottom:15px;
+	}
+}
+
+th.mat-header-cell {
+	color:#000;
+	font-weight:700 !important;
+	font-size:1.3rem;
+	padding-top:25px !important;
+	padding-bottom:25px !important;
+}
+
+
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+/*
+.mat-column-select {
+  overflow: initial;
+}
+*/

@@ -1,0 +1,52 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+
+  <div fxLayout="column" fxLayoutAlign="start" fxFlex="1 1 auto">
+    <mat-toolbar>
+      <!-- <span>{{'Custom Projects' | translate}}</span> -->
+      <span>{{'Expert mode' | translate}}</span>
+    </mat-toolbar>
+
+    <mat-divider style="margin-bottom:15px;"></mat-divider>
+
+    <div fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="25px">
+
+      <div class="dashboard-section" *ngFor="let project of customProjects">
+        <mat-card class="example-card">
+          <div class="rmv-cutom-project">
+            <i class="material-icons" (click)="removeCustomProject(project.id)">clear</i>
+          </div>
+          <mat-card-header class="expert-mode-card-header" routerLink="/projectnew/1/{{project.id}}">
+            <mat-card-title>{{project.friendly_name}}</mat-card-title>
+            <mat-card-subtitle>Created: {{project.created_at}}</mat-card-subtitle>
+          </mat-card-header>
+          <img routerLink="/projectnew/1/{{project.id}}" mat-card-image src="/assets/images/ibidaasHome.jpg"
+            alt="Photo of a i-BiDaaS">
+          <mat-card-content class="expert-mode-card-content" routerLink="/projectnew/1/{{project.id}}">
+            <p routerLink="/projectnew/1/{{project.id}}">
+              <!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. -->
+              {{project.description}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions routerLink="/projectnew/1/{{project.id}}">
+            <mat-divider></mat-divider>
+            <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="center"
+              style="padding-top: 10px; font-size: 12px;">
+              <div>Lang: {{project.language}}</div>
+              <div>Upd: {{project.updated_at}}</div>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="dashboard-section create-new">
+        <mat-card class="example-card" routerLink="/projectnew/1/-1">
+          <mat-card-header>
+            <mat-card-title>Create New Project</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="/assets/images/create-png.png" alt="Create New Project i-BiDaaS">
+          <mat-card-content>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>

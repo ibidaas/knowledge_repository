@@ -1,0 +1,320 @@
+#mapid {
+  width: 100%;
+  height: 100%; 
+  margin: auto;}
+
+table {
+    width: 30%;
+    margin: auto;
+    
+  }
+
+  .table-container {
+    margin-top: 50px;
+    max-height: 600px;
+    overflow: auto;
+  }
+  
+  #playReceiveTestDataBtn {
+    position: absolute;
+    top: 130px;
+    right: 5px;
+    padding: 10px;
+    background: rgba(255,255,255, 0.9);
+    z-index: 400;
+    border-radius: 4px;
+  }
+
+
+  
+  #controls{
+    position: absolute;
+    right:20px;
+    top:75px;
+    z-index: 400;
+    width:230px;
+    height:470px;
+    background-color:white;
+    border-radius: 20px;
+    line-height: 18px;
+  }
+
+  #controlsLabel {
+    position: absolute;
+    border:none;
+    resize:none; 
+    background:transparent;
+    text-align: center;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    font-weight:bold;
+    width:100%;
+    text-align: center;
+    top:5px;
+    
+    z-index: 400;
+    border-radius: 4px;
+  }
+
+
+  .slidecontainer {
+    width: 100%;
+  }
+  
+  .slider {
+    position: absolute;
+    -webkit-appearance: none;
+    top: 60px;
+    right: 22px;
+    width:182px;
+    height: 4px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.8;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    z-index: 400;
+  }
+  
+  .slider:hover {
+    opacity: 1;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 21px;
+    height: 21px;
+    background-color: rgb(82, 159, 231);
+    border-radius: 50%;
+    cursor:pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: rgb(198, 226, 199);
+    cursor: pointer;
+  }
+  
+  #sliderLabel {
+    position: absolute;
+    border:none;
+    resize:none;
+    background:transparent;
+    text-align: center;
+    font: 15px/16px Arial, Helvetica, sans-serif;
+    //font-weight:bold; 
+    width:140px;
+    top: 30px;
+    right: 40px;
+    z-index: 400;
+    border-radius: 4px;
+  }
+
+  .sliderticks {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 33px;
+    z-index: 400;
+    font-size: 13px;
+  }
+  
+  .sliderticks p {
+    top:75px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 1px;
+    background: #D3D3D3;
+    height: 5px;
+    line-height: 40px;
+    margin: 0 0 0 0;
+    z-index: 400;
+    
+  }
+
+  /*
+  #rangeList{
+    width:3px;
+    background-color:#d3d3d3;
+    border-radius: 50%;
+    z-index: 400;
+  }
+*/
+
+  #testStepBack {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    background: rgba(51, 46, 46, 0.9);
+    padding: 10px;
+    z-index: 400;
+    border-radius: 4px;
+  }
+
+  #stepBackTestData {
+    position: absolute;
+    top: 20px;
+    right: 82px;
+    background: rgba(255,255,255, 0.9);
+    padding: 10px;
+    z-index: 400;
+    border-radius: 4px;
+  }
+
+  #onlyHotspotBtn {
+    margin-top: 1em;
+    position: absolute;
+    top: 185px;
+    right: 5px;
+    background: rgba(255,255,255, 0.9);
+    padding: 10px;
+    z-index: 400;
+    border-radius: 4px;
+  }
+
+  .legend {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    background: rgba(255,255,255, 0.9);
+    line-height: 18px;
+    border-radius: 5px;
+    color: #555;
+}
+
+#legendLabel {
+  position: absolute;
+  border:none;
+  resize:none; 
+  background:transparent;
+  text-align: center;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  font-weight:bold;
+  top:5px;
+  right:5px;
+  width:100%;
+  text-align: center;
+  z-index: 400;
+}
+
+.legend i {
+    color: #777;
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+#mapLegend {
+
+  margin-top:1em;
+  position: absolute;
+  top: 375px;
+  width:210px;
+  right: 0px;
+  padding: 10px;
+  border:0;
+  border-radius: 8px;
+  font-size:14px; 
+  z-index: 400;
+  //background-color:#FFFFFF !important;
+
+}
+#blueImage{
+  position: absolute;
+  bottom: 55px;
+  left: 135px;
+  padding: 2px;
+}
+#redImage{
+  position: absolute;
+  bottom: 15px;
+  left: 135px;
+  padding: 2px;
+}
+
+
+
+
+.slidecontainerOpacity {
+  width: 100%;
+}
+
+
+.sliderOpacity {
+  position: absolute;
+  -webkit-appearance: none;
+  top: 320px;
+  right: 42px;
+  width:145px;
+  height: 4px;
+  background: #d3d3d3;
+  padding: 0 0px;
+  outline: none;
+  opacity: 0.8;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  z-index: 400;
+}
+
+.sliderOpacity:hover {
+  opacity: 1;
+}
+
+.sliderOpacity::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 21px;
+  height: 21px;
+  background-color: rgb(82, 159, 231);
+  border-radius: 50%;
+  cursor:pointer;
+}
+
+.sliderOpacity::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: rgb(198, 226, 199);
+  cursor: pointer;
+}
+
+#sliderLabelOpacity {
+  position: absolute;
+  border:none;
+  resize:none;
+  background:transparent;
+  text-align: center;
+  font: 13px/16px Arial, Helvetica, sans-serif;
+  font-weight:bold; 
+  width:140px;
+  top: 285px;
+  right: 40px;
+  z-index: 400;
+  border-radius: 4px;
+}
+
+.sliderticksOpacity {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 52px;
+  z-index: 400;
+  font-size: 13px;
+}
+
+.sliderticksOpacity p {
+  top:330px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 1px;
+  background: #D3D3D3;
+  height: 5px;
+  line-height: 40px;
+  margin: 0 0 0 0;
+  z-index: 400;
+  
+}

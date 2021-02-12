@@ -1,0 +1,28 @@
+<div>
+  <h2 mat-dialog-title> K-means Prediction </h2>
+  <mat-dialog-content> <b>Description:</b>
+    <p>
+      K-means algorithm is a supervised learning algorithm which is used for both classification as well as regression.
+      To process the learning data, the K-means algorithm in data mining starts with a first group of randomly selected
+      centroids,
+      which are used as the beginning points for every cluster, and then performs iterative (repetitive) calculations to
+      optimize the
+      positions of the centroids.
+    </p>
+    <b>Parameters:</b>
+
+    <ul>
+      <li>Number of clusters: k</li>
+    </ul>
+
+    <b>When to use: </b>
+    <ul>
+      <li>If you have labeled data</li>
+      <li>If the output of the model is a class (classification)</li>
+      <li>If the output of the model is a number (regression)</li>
+    </ul>
+  </mat-dialog-content>
+  <div mat-dialog-actions align="end">
+    <button class="mat-raised-button" (click)="close()">Close</button>
+  </div>
+</div>

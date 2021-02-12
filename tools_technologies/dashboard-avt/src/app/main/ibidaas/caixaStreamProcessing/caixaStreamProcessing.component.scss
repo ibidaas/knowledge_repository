@@ -1,0 +1,14 @@
+@import "src/@fuse/scss/fuse";
+
+.nvtooltip.xy-tooltip{
+    background-color: white;
+    z-index: 999;
+}
+
+caixa-Stream-Processing {
+    .caixa-stream-processing-table-container{
+        width: 95vw;
+        margin: 0 auto;
+        overflow-x: scroll;
+    }
+}

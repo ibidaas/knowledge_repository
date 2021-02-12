@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>{{description}}</h2>
+
+
+<mat-dialog-content>
+
+    <div class="tab-content p-24" frameworkPerfectScrollbar>
+        <div fxLayout="row wrap" fxLayoutAlign="start start">
+            <div class="box-container" fxLayout="column" style="width:100%;">   
+                <div class="vertical-container" fxLayout="column" fxLayoutAlign="stretch" fxFlex="100%">
+                    <div class="content-container" fxLayout="column" fxLayoutAlign="stretch" fxFlex="auto">
+                        <div class="dropzone dropzone-container">
+                            <x-upload
+                                controller="{{controller}}"
+                                action="{{action}}"
+                                label="{{label}}"
+                                maxFiles="4"
+                                maxSize="30"
+                                fileExt="ZIP, RAR"
+                                (uploadStatus)="refreshImages($event)"
+                                (uploadedFile)="filesUploaded($event)" >
+                            </x-upload>
+                        </div>
+
+                        <!-- <div class="mat-elevation-z0" *ngIf="listingImages != null">
+                            <mat-card class="cardImg" *ngFor="let img of listingImages let index = index" >
+                                <img mat-card-image [src]="img" style="max-width: 300px !important;">
+                                <div style="text-align: center; width:100%;">
+                                    <button mat-stroked-button color="warn" (click)="removeImage(img)">remove</button>
+                                </div>
+                            </mat-card>
+                        </div> -->
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+    <button class="mat-raised-button"
+            (click)="close()">
+        Cancel
+    </button>
+
+    <button class="mat-raised-button mat-primary" [disabled]="!isFileUploaded"
+            (click)="save()">
+        Ok
+    </button>
+
+</mat-dialog-actions>

@@ -1,0 +1,796 @@
+<div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+
+
+    <!-- <div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+
+            <button mat-raised-button color="warn" (click)="runFiatCRFStreamingExperiment()"
+                [disabled]="isExperimentRunning">Run Experiment</button>
+            <div>
+                <img *ngIf="isExperimentRunning" src="../../../../assets/smallLoader.gif" width="40px"
+                    style="margin-left:20px" />
+
+            </div>
+        </div>
+    </div> -->
+
+
+    <mat-tab-group>
+
+
+
+
+        <mat-tab label="Global">
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                fxLayoutGap="25px" style="padding: 25px;">
+
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+
+
+
+                    <mat-card style="width:100%; padding: 0px;">
+                        <div class="p-16" fxLayout="column">
+                            <div class="p-16 accent">
+                                <div class="h3">Global Live Chart (Last 20 Measurements)</div>
+                            </div>
+
+                            <div>
+                                <button style="margin-top: 1em; padding: 1em; background-color: ghostwhite;"
+                                    mat-raised-button (click)="pause()">Pause/Start</button>
+                            </div>
+
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+                                <div class="chart-container" style="width:100%; height: 900px;">
+
+                                    <canvas baseChart [datasets]="lineChartDataGl" [labels]="lineChartLabels"
+                                        [options]="lineChartOptions" [legend]="lineChartLegend"
+                                        [chartType]="lineChartType"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                    </mat-card>
+
+                </div>
+
+            </div>
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                fxLayoutGap="25px">
+
+                <div class="p-16" style="width: 100%;">
+                    <mat-card style="width:100%; padding: 0px;">
+                        <div class="p-16">
+                            <div class="p-16 accent">
+                                <div class="h3">Live Production Process of Aluminium die-casting </div>
+                            </div>
+                        </div>
+                        <div class="p-16" class="fiat-crf-table-container">
+                            <table mat-table [dataSource]="dataSourcet1Gl" matSort #matsort1='matSort'
+                                style="min-width:1800px; width: 100%;">
+
+                                <!-- Timestamp -->
+                                <ng-container matColumnDef="Timestamp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Timestamp}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Image">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Image}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Classification -->
+                                <ng-container matColumnDef="Classification">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Classification </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Classification}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- JD -->
+                                <ng-container matColumnDef="JD">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> JD </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.JD}}
+                                    </td>
+                                </ng-container>
+
+                                <!--  N -->
+                                <ng-container matColumnDef="N">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> N </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.N}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Stampo -->
+                                <ng-container matColumnDef="Stampo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Stampo </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Stampo}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- VA1 -->
+                                <ng-container matColumnDef="VA1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VA1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.VA1}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- VM1 -->
+                                <ng-container matColumnDef="VM1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VM1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.VM1}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Sigma1 -->
+                                <ng-container matColumnDef="Sigma1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sigma1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Sigma1}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- PM1 -->
+                                <ng-container matColumnDef="PM1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PM1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.PM1}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- VA2 -->
+                                <ng-container matColumnDef="VA2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VA2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.VA2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- VM2 -->
+                                <ng-container matColumnDef="VM2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VM2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.VM2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Sigma2 -->
+                                <ng-container matColumnDef="Sigma2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sigma2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Sigma2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- PM2  -->
+                                <ng-container matColumnDef="PM2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PM2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.PM2}}
+                                    </td>
+                                </ng-container>
+
+                                <!--StatisticDataT2  -->
+                                <ng-container matColumnDef="StatisticDataT2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> StatisticDataT2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.StatisticDataT2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- L2 -->
+                                <ng-container matColumnDef="L2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> L2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.L2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- StatisticDataT3 -->
+                                <ng-container matColumnDef="StatisticDataT3">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> StatisticDataT3 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.StatisticDataT3}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- L3 -->
+                                <ng-container matColumnDef="L3">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> L3 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.L3}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- PM3 -->
+                                <ng-container matColumnDef="PM3">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PM3 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.PM3}}
+                                    </td>
+                                </ng-container>
+
+                                <!--PF  -->
+                                <ng-container matColumnDef="PF">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PF </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.PF}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- BH -->
+                                <ng-container matColumnDef="BH">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> BH </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.BH}}
+                                    </td>
+                                </ng-container>
+
+
+
+                                <!-- RT -->
+                                <ng-container matColumnDef="RT">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> RT </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.RT}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- TT -->
+                                <ng-container matColumnDef="TT">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> TT </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.TT}}
+                                    </td>
+                                </ng-container>
+
+
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row
+                                    [ngClass]="{'zero': row.Classification =='0','one': row.Classification == '1','two': row.Classification == '2'}"
+                                    *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+
+                            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                        </div>
+                    </mat-card>
+                </div>
+
+            </div>
+
+
+
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                fxLayoutGap="25px">
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 50%;">
+                    <mat-card style="width:100%; padding: 0px; height: 500px;">
+                        <div class="p-16" fxLayout="column">
+                            <div class="p-16 accent">
+                                <div class="h3">Classification % (Global)</div>
+                            </div>
+                        </div>
+                        <div style="height: 400px; width: 80%; margin: auto;">
+
+                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+                                [options]="pieChartOptions" [colors]="pieChartColors" [legend]="pieChartLegend">
+                            </canvas>
+                        </div>
+                    </mat-card>
+
+
+                </div>
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center"
+                    style="width: 100%; margin-left:-250px">
+                    <mat-card style="width:100%; padding: 0px; min-height: 500px;">
+                        <div class="p-16" fxLayout="column">
+                            <div class="p-16 accent">
+                                <div class="h3">Parameters Measurements Statistics</div>
+                            </div>
+
+                            <table mat-table [dataSource]="dataSourcet2Gl" matSort #matsort5='matSort'>
+
+                                <ng-container matColumnDef="type">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> type </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="min">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> min </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.min}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="max">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> max </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.max}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="avg">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> avg </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.avg}} </td>
+                                </ng-container>
+
+
+                                <tr mat-header-row *matHeaderRowDef="myColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: myColumns;"></tr>
+                            </table>
+                            <mat-paginator #paginator5 [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+
+
+                        </div>
+                    </mat-card>
+                </div>
+
+
+
+            </div>
+
+
+
+
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                fxLayoutGap="25px">
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+                    <mat-card style="width:100%; padding: 0px; height: 600px;">
+                        <div class="p-16" fxLayout="column">
+                            <div class="p-16 accent">
+                                <div class="h3">Live Classification Chart (Last 20 Engine IDs)</div>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 500px;">
+
+                            <canvas baseChart [datasets]="lineChartDataGl2" [labels]="lineChartLabels2"
+                                [colors]="lineChartColors2" [options]="lineChartOptions2" [legend]="lineChartLegend2"
+                                [chartType]="lineChartType2"></canvas>
+                        </div>
+                    </mat-card>
+
+
+                </div>
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+                    <mat-card style="width:100%; padding: 0px; min-height: 600px;">
+                        <div class="p-16" fxLayout="column">
+                            <div class="p-16 accent">
+                                <div class="h3"> Live Classification Table (Engine IDs)</div>
+                            </div>
+
+
+
+                            <table mat-table [dataSource]="dataSourcet3Gl" matSort #matsort2='matSort'>
+
+                                <!-- Timestamp -->
+                                <ng-container matColumnDef="Timestamp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Timestamp}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Classification -->
+                                <ng-container matColumnDef="Classification0">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Classification0 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Classification0}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- TT -->
+                                <ng-container matColumnDef="Classification1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Classification1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Classification1}}
+                                    </td>
+                                </ng-container>
+
+                                <!--  Sigma1 -->
+                                <ng-container matColumnDef="Classification2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Classification2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Classification2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Sigma2 -->
+                                <ng-container matColumnDef="Engine">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Engine IDs</th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Engine}}
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+
+                            </table>
+
+                            <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+
+
+                        </div>
+                    </mat-card>
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </mat-tab>
+
+
+
+        <mat-tab label="Classification 0">
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                fxLayoutGap="25px" style="padding: 25px;">
+
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+
+
+
+                    <mat-card style="width:100%; padding: 0px;">
+                        <div class="p-16" fxLayout="column">
+                            <div class="p-16 accent">
+                                <div class="h3">Classification 0 - Live Chart (Last 20 Measurements)</div>
+                            </div>
+
+                            <div>
+                                <button style="margin-top: 1em; padding: 1em; background-color: ghostwhite;"
+                                    mat-raised-button (click)="pause()">Pause/Start</button>
+                            </div>
+
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+                                <div style="width:100%; height: 900px; ">
+
+                                    <canvas baseChart [datasets]="lineChartDataGlCl" [labels]="lineChartLabels1"
+                                        [options]="lineChartOptions1" [legend]="lineChartLegend1"
+                                        [chartType]="lineChartType1"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+
+                </div>
+
+            </div>
+
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                fxLayoutGap="25px">
+
+                <div class="p-16" style="width: 100%;">
+                    <mat-card style="width:100%; padding: 0px;">
+                        <div class="p-16">
+                            <div class="p-16 accent">
+                                <div class="h3">Live Production Process of Aluminium die-casting</div>
+                            </div>
+                        </div>
+                        <div class="p-16" class="fiat-crf-table-container">
+                            <table mat-table [dataSource]="dataSourcet1Cl" matSort #matsort3='matSort'
+                                style="min-width:1800px; width: 100%;">
+
+                                <!-- Timestamp -->
+                                <ng-container matColumnDef="Timestamp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Timestamp}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Image">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Image}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Classification -->
+                                <ng-container matColumnDef="Classification">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Classification </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Classification}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- JD -->
+                                <ng-container matColumnDef="JD">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> JD </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.JD}}
+                                    </td>
+                                </ng-container>
+
+                                <!--  N -->
+                                <ng-container matColumnDef="N">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> N </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.N}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Stampo -->
+                                <ng-container matColumnDef="Stampo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Stampo </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Stampo}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- VA1 -->
+                                <ng-container matColumnDef="VA1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VA1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.VA1}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- VM1 -->
+                                <ng-container matColumnDef="VM1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VM1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.VM1}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Sigma1 -->
+                                <ng-container matColumnDef="Sigma1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sigma1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Sigma1}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- PM1 -->
+                                <ng-container matColumnDef="PM1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PM1 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.PM1}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- VA2 -->
+                                <ng-container matColumnDef="VA2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VA2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.VA2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- VM2 -->
+                                <ng-container matColumnDef="VM2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VM2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.VM2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Sigma2 -->
+                                <ng-container matColumnDef="Sigma2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sigma2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Sigma2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- PM2  -->
+                                <ng-container matColumnDef="PM2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PM2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.PM2}}
+                                    </td>
+                                </ng-container>
+
+                                <!--StatisticDataT2  -->
+                                <ng-container matColumnDef="StatisticDataT2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> StatisticDataT2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.StatisticDataT2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- L2 -->
+                                <ng-container matColumnDef="L2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> L2 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.L2}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- StatisticDataT3 -->
+                                <ng-container matColumnDef="StatisticDataT3">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> StatisticDataT3 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.StatisticDataT3}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- L3 -->
+                                <ng-container matColumnDef="L3">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> L3 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.L3}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- PM3 -->
+                                <ng-container matColumnDef="PM3">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PM3 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.PM3}}
+                                    </td>
+                                </ng-container>
+
+                                <!--PF  -->
+                                <ng-container matColumnDef="PF">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PF </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.PF}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- BH -->
+                                <ng-container matColumnDef="BH">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> BH </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.BH}}
+                                    </td>
+                                </ng-container>
+
+
+
+                                <!-- RT -->
+                                <ng-container matColumnDef="RT">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> RT </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.RT}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- TT -->
+                                <ng-container matColumnDef="TT">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> TT </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.TT}}
+                                    </td>
+                                </ng-container>
+
+
+
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row
+                                    [ngClass]="{'zero': row.Classification =='0','one': row.Classification == '1','two': row.Classification == '2'}"
+                                    *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+
+                            <mat-paginator #paginator3 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                        </div>
+                    </mat-card>
+                </div>
+
+            </div>
+
+
+
+            <div class="p-16" fxLayout="row" fxLayoutAlign="start center" style="width: 100%; ">
+                <mat-card style="width:100%; padding: 0px;">
+                    <div class="p-16" fxLayout="column">
+                        <div class="p-16 accent">
+                            <div class="h3">Parameters Measurements Statistics</div>
+                        </div>
+
+                        <table mat-table [dataSource]="dataSourcet2Cl" matSort #matsort6='matSort'>
+
+                            <ng-container matColumnDef="type">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> type </th>
+                                <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="min">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> min </th>
+                                <td mat-cell *matCellDef="let element"> {{element.min}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="max">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> max </th>
+                                <td mat-cell *matCellDef="let element"> {{element.max}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="avg">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> avg </th>
+                                <td mat-cell *matCellDef="let element"> {{element.avg}} </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="myColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: myColumns;"></tr>
+                        </table>
+                        <mat-paginator #paginator6 [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+
+
+                    </div>
+                </mat-card>
+            </div>
+
+
+
+
+
+
+
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                fxLayoutGap="25px">
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+                    <mat-card style="width:100%; padding: 0px; height: 600px;">
+                        <div class="p-16" fxLayout="column">
+                            <div class="p-16 accent">
+                                <div class="h3">Live Classification Chart (Last 20 Engine IDs)</div>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 500px;">
+
+                            <canvas baseChart [datasets]="lineChartDataGlCl2" [labels]="lineChartLabels3"
+                                [colors]="lineChartColors3" [options]="lineChartOptions2" [legend]="lineChartLegend2"
+                                [chartType]="lineChartType2"></canvas>
+                        </div>
+                    </mat-card>
+
+
+                </div>
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+                    <mat-card style="width:100%; padding: 0px; min-height: 600px;">
+                        <div class="p-16" fxLayout="column">
+                            <div class="p-16 accent">
+                                <div class="h3"> Live Classification Table (Engine IDs)</div>
+                            </div>
+                            <table mat-table [dataSource]="dataSourcet3Cl" matSort #matsort4='matSort'>
+
+                                <!-- Timestamp -->
+                                <ng-container matColumnDef="Timestamp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Timestamp}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Classification -->
+                                <ng-container matColumnDef="Classification0">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Classification0 </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Classification0}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Sigma2 -->
+                                <ng-container matColumnDef="Engine">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Engine </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.Engine}}
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+
+                            </table>
+
+                            <mat-paginator #paginator4 [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

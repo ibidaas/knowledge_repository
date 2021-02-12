@@ -1,0 +1,197 @@
+<spinner [loading]="loadingSpinner" [fullscreen] ="true"></spinner>
+
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+    <!--
+	<button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+		{{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+	</button>
+	-->
+	<div class="mat-elevation-z8">
+		<mat-horizontal-stepper [linear]="isLinear" #stepper>
+		
+			<mat-step [stepControl]="formGroupFabrication">
+
+				<form [formGroup]="formGroupFabrication" class="p-24 mr-24"  fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+					<ng-template matStepLabel>PROJECT DETAILS</ng-template>
+					
+					<div class="h2 mb-24">Setup Fabricated Dataset</div>
+
+                    <ng-container *ngIf="!isReadOnly">
+                        <mat-tab-group [backgroundColor]="accent" dynamicHeight>
+                            
+                            <mat-tab label="Fabrication Model">
+                            
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                    <mat-form-field fxFlex="100" class="pr-4">
+                                        <mat-select placeholder="Select Fabrication Model" formControlName="FabricationModelCtrl" (selectionChange)="change($event)" required>
+                                            <mat-option *ngFor="let model of FabricationModels" [value]="model.Id">
+                                                {{model.Title}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <h3 style="color:#000; font-weight:500;">Parameters</h3>
+                                
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-top:20px;">
+                                    
+                                    <mat-form-field fxFlex="50" class="pr-4" *ngFor="let param of Params">
+                                        <input matInput placeholder="{{param.Label}}" [formControlName]="param.Name">
+                                    </mat-form-field>
+                                    
+                                </div>
+                                
+                                <button mat-raised-button color="accent" style="margin-top:20px;"
+                                    (click)="startFabrication()">START FABRICATION</button>
+                                <div style="color:green; font-weight:500; padding-top: 10px;" *ngIf="fabricationCompleted">Completed - id: {{fabricationGeneratedId}}</div>
+                            
+                            </mat-tab>
+                            <mat-tab label="External">
+                            
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                    <mat-form-field fxFlex="100" class="pr-4">
+                                        <mat-select placeholder="Load External" formControlName="ExternalCtrl">
+                                            <mat-option *ngFor="let external of Externals" [value]="external.value">
+                                                {{external.viewValue}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            
+                            </mat-tab>
+                        </mat-tab-group>
+                    </ng-container>
+
+                    <ng-container *ngIf="isReadOnly">
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field fxFlex="100" class="pr-4">
+                                <mat-select placeholder="Select Fabrication Model" formControlName="FabricationModelCtrl" required>
+                                    <mat-option *ngFor="let model of FabricationModels" [value]="model.Id" (onSelectionChange)="change($event)">
+                                        {{model.Title}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        
+                        <h3 style="color:#000; font-weight:500;">Parameters</h3>
+                        
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-top:20px;">
+                            
+                            <mat-form-field fxFlex="50" class="pr-4" *ngFor="let param of Params">
+                                <input matInput placeholder="{{param.Label}}" [formControlName]="param.Name">
+                            </mat-form-field>
+                            
+                        </div>
+
+                    </ng-container>
+					
+					<div class="stepper-nav-buttons">
+						<button mat-raised-button color="primary" matStepperNext *ngIf="!isReadOnly && fabricationCompleted">PROCEED</button>
+					</div>
+						
+                </form>
+                
+                <div style="padding: 20px; border:2pt solid silver;" *ngIf="isReadOnly">
+                    <h2>Experiments</h2>
+
+                    <div style="width:100%; text-align: right; margin-top: -40px;">
+                        <button mat-raised-button color="accent" (click)="addNewExperiment()" matStepperNext>ADD EXPRERIMENT</button>
+                    </div>
+
+                    <x-grid [data]="data" [columns]="columns" (selectRow)="experimentRowClicked($event)"></x-grid>
+                </div>
+
+            </mat-step>
+            
+
+
+			
+			<mat-step [stepControl]="formGroupAnalysis">
+				<form [formGroup]="formGroupAnalysis" class="p-24 mr-24"  fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+					<ng-template matStepLabel>ANALYSIS</ng-template>
+					
+                    <div class="h2 mb-24">Setup Analysis</div>
+                    
+                    <div class="mb-24">
+                        In addition to the system-defined analysis algorithms, the IbiDaaS platform supports user-defined analysis algorithms.<br/>
+                        To use your custom algorithm, please select 'Upload your own algorithm ...' <br/>
+                        Your algorithm should be placed in a .zip file following the : <br/>
+                        <a href="#">IBiDaaS custom algorithms specification</a> (see also the provided <a href="#">example</a>)
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field fxFlex="100" class="pr-4">
+                            <mat-select placeholder="Select Analysis Algorithm" formControlName="AnalysisAlgorithmsCtrl" (selectionChange)="changeAlgorithm($event)" required>
+                                <mat-option *ngFor="let model of AnalysisAlgorithms" [value]="model.Id">
+                                    {{model.Title}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <h3 style="color:#000; font-weight:500;">Parameters</h3>
+                    
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-top:20px;">
+                        
+                        <mat-form-field fxFlex="50" class="pr-4" *ngFor="let param of ParamsAnalysis">
+                            <input matInput placeholder="{{param.Label}}" [formControlName]="param.Name">
+                        </mat-form-field>
+                        
+                    </div>
+                    
+
+                    <button mat-raised-button color="accent" style="margin-top:20px; max-width: 140px;" *ngIf="selectedExperiment == null"
+                        (click)="startAnalysis()">START ANALYSIS</button>
+                    <div style="color:green; font-weight:500; padding-top: 10px" *ngIf="analysisCompleted && selectedExperiment == null">Completed - id: {{analysisGeneratedId}}</div>                      
+					
+					<div class="stepper-nav-buttons">
+						<button mat-raised-button matStepperPrevious color="warn">BACK</button>
+                        <button mat-raised-button matStepperNext color="primary" *ngIf="analysisCompleted || selectedExperiment !== null">PROCEED</button>
+                        <button mat-raised-button (click)="downloadConfigAnalysis()" color="cold" *ngIf="analysisCompleted || selectedExperiment !== null">EXPORT CONFIG</button>
+                    </div>
+                    
+                </form>
+            </mat-step>
+            
+
+
+
+			
+			<mat-step>
+				<ng-template matStepLabel>VISUALIZATION</ng-template>
+				
+				<div class="fuse-card auto-width mb-16">
+					<div class="position-relative p-24" fxLayout="row" fxLayoutAlign="space-between center">
+						<div fxLayout="column" fxLayoutAlign="start start">
+							<span class="h2">People Per Relationships</span>
+						</div>
+						<div fxLayout="row" fxLayoutAlign="start center">
+							<div class="py-8 px-12 border-radius-2 line-height-1 mr-8 cursor-pointer"
+								 (click)="selectedDay = 'today'"
+								 [ngClass]="{'accent': selectedDay === 'today'}">
+								Today
+							</div>
+						</div>
+					</div>
+					<div class="position-relative h-368 pb-16">
+						<canvas baseChart
+							[datasets]="widgets.wdgStatsVisibility.datasets[selectedDay]"
+							[labels]="widgets.wdgStatsVisibility.labels"
+							[colors]="widgets.wdgStatsVisibility.colors"
+							[options]="widgets.wdgStatsVisibility.options"
+							[chartType]="widgets.wdgStatsVisibility.chartType">
+						</canvas>
+					</div>
+				</div>				
+				
+				<div class="stepper-nav-buttons">
+                    <button mat-raised-button matStepperPrevious color="warn">BACK</button>
+                    <button mat-raised-button class="success" (click)="openDialog()">SAVE</button>
+					<button mat-raised-button (click)="stepper.reset()" color="purple">RESET</button>
+				</div>
+			</mat-step>
+			
+		</mat-horizontal-stepper>
+	</div>
+</div>

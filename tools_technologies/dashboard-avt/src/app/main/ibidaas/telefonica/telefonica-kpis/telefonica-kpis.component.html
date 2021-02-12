@@ -1,0 +1,121 @@
+<!-- <div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"> -->
+
+
+<!-- <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="25px"
+  style="padding: 25px;"> -->
+<div class="p-16" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+  <mat-card style="width:90%; padding: 0px; margin: auto;">
+    <div class="p-16" fxLayout="column">
+      <div class="p-16 accent">
+        <div class="h3">Antenna KPIs - Hotspot Prediction (Live Streaming)</div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutAlign="start center">
+        <div style="height: 1100px; width: 100%; margin: auto;" id="mapid"></div>
+
+        <div class="table-container">
+
+          <div id="controls" class="controls">
+            <fieldset id="mapLegend">
+              <legend></legend>
+              <!-- <label id=legendLabel for="regular">Colors Table</label> -->
+              <label for="regular">Regular usage: </label>
+
+              <img id="blueImage" src="assets/blueAntennatransparent.png" width="35" height="35" alt="Computer Hope" />
+              <br><br>
+              <label style="margin-left: 2em;" for="hotspot">Hotspot:</label>
+
+              <img id="redImage" src="assets/redAntennatransparent.png" width="36" height="36" alt="Computer Hope" />
+              <br><br>
+            </fieldset>
+
+            <div class="slidecontainer">
+              <!-- <label id="controlsLabel" name="controlsLabel">Available Timestamps</label> -->
+              <label id="sliderLabel" name="sliderLabel"> </label>
+              <input style="padding: 0%;" type="range" min="0" max="4" value="4" class="slider" id="timestamp" step="1"
+                list="sliderticks" (click)="testStepBack()">
+
+              <div class="sliderticks">
+                <p>-4hrs</p>
+                <p>-3hrs</p>
+                <p>-2hrs</p>
+                <p>-1hrs</p>
+                <p>Live</p>
+              </div>
+            </div>
+            <!--
+            <div id=slider>
+              <label id=sliderLabel for="textInput">Live view</label>
+              <input id="timestamp"  type="range" name="timestamp" min="0" max="3">
+              <input id=submit type="submit" (click)="testStepBack(vol)">
+            </div>
+          -->
+
+
+
+            <button mat-raised-button id="playReceiveTestDataBtn" (click)="receiveTestData()">Go Live</button>
+            <!--
+            <button id="testStepBack"(click)="testStepBack()">Step Back</button>
+          -->
+            <!--<button id="stepBackTestData"(click)="stepBackTestData()">Step Back</button>
+            -->
+
+            <button mat-raised-button id="onlyHotspotBtn" (click)="onlyHotspot()">Show only Hotspots</button>
+
+            <div id="stateIndexHotspots" style="display: none;">allAntennas</div>
+            <div id="stateIndexLive" style="display: none;">playState</div>
+
+
+            <div class="slidecontainerOpacity">
+              <label id="sliderLabelOpacity" name="sliderLabelOpacity">Opacity Controls</label>
+              <input type="range" min="0.0" max="0.8" value="0.6" class="sliderOpacity" id="opacityStep" step="0.2"
+                list="sliderticks" (click)="changeOpacity()">
+              <div class="sliderticksOpacity">
+                <p>0</p>
+                <p>0.2</p>
+                <p>0.4</p>
+                <p>0.6</p>
+                <p>0.8</p>
+              </div>
+            </div>
+          </div>
+
+
+          <!--
+        <table  mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        
+            --- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" --
+          
+            -- Position Column --
+            <ng-container matColumnDef="DataType">
+              <th mat-header-cell *matHeaderCellDef> Antenna Specs </th>
+              <td mat-cell *matCellDef="let element"> {{element.DataType}} </td>
+            </ng-container>
+          
+            -- Name Column --
+            <ng-container matColumnDef="Value">
+              <th mat-header-cell *matHeaderCellDef> Value </th>
+              <td mat-cell *matCellDef="let element"> {{element.Value}} </td>
+            </ng-container>
+          
+          
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        -->
+        </div>
+
+
+
+
+
+
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- <iframe width="100%" height="100%" frameBorder="0" [src]="urlSafe"></iframe> -->
+
+
+</div>
