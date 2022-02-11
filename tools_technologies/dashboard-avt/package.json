@@ -75,7 +75,7 @@
     "ngx-color-picker": "7.0.2",
     "ngx-cookie-service": "2.0.0",
     "ngx-dropzone-wrapper": "7.2.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "nvd3": "1.8.3",
     "perfect-scrollbar": "1.4.0",
     "prismjs": "1.23.0",
